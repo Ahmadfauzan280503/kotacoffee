@@ -1,4 +1,4 @@
-# 🥬Sayur Segar
+# Kotacoffee.id
 
 ![App Screenshot](./public/images/ss.png)
 
@@ -16,7 +16,7 @@ Sebuah website jual beli sayur online yang dirancang untuk memudahkan konsumen m
 ## 📂 Project Structure
 
 ```bash
-fe-sayur-segar/
+kotacoffee/
 │
 ├── app/             # Next.js App Router (pages, layouts, routes)
 ├── components/      # Reusable UI components
@@ -37,7 +37,7 @@ fe-sayur-segar/
 
 ```bash
   git clone https://github.com/fahrurrzl/fe-sayur-segar.git
-  cd fe-sayur-segar
+  cd kotacoffee
 ```
 
 ### 2. Install Dependencies
