@@ -171,8 +171,16 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
       {/* Mobile Sidebar Overlay */}
       {isSidebarOpen && (
         <div
+          aria-label="Close sidebar"
           className="fixed inset-0 z-40 bg-black/50 lg:hidden backdrop-blur-sm"
+          role="button"
+          tabIndex={0}
           onClick={() => setIsSidebarOpen(false)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" || e.key === " ") {
+              setIsSidebarOpen(false);
+            }
+          }}
         />
       )}
     </div>

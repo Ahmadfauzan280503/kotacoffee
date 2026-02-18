@@ -26,7 +26,26 @@ const HeroSection = () => {
     setIsMounted(true);
   }, []);
 
-  if (!isMounted) return <div className="min-h-screen bg-background" />;
+  if (!isMounted) {
+    return (
+      <div className="relative bg-background py-16 overflow-hidden min-h-[500px] flex items-center justify-center">
+        <div className="container mx-auto px-4 animate-pulse">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="space-y-8">
+              <div className="h-12 w-3/4 bg-success/10 rounded-lg" />
+              <div className="h-12 w-1/2 bg-success/5 rounded-lg" />
+              <div className="h-24 w-full bg-foreground/5 rounded-lg" />
+              <div className="flex gap-4">
+                <div className="h-12 w-32 bg-success/20 rounded-lg" />
+                <div className="h-12 w-32 bg-foreground/5 rounded-lg" />
+              </div>
+            </div>
+            <div className="h-[400px] w-full bg-success/5 rounded-3xl" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <section className="relative bg-gradient py-16 overflow-hidden">

@@ -1,8 +1,18 @@
 export type SiteConfig = typeof siteConfig;
 
 export const siteConfig = {
-  name: "Kotacoffee.id",
-  description: "Kopi Trotoar",
+  name: "KotaCoffee.id",
+  description: "KotaCoffee.id - Kopi Trotoar Berkualitas Tinggi. Nikmati pilihan kopi terbaik, minuman non-kopi segar, dan makanan lezat langsung dari toko kami.",
+  keywords: [
+    "Kopi",
+    "Coffee",
+    "KotaCoffee",
+    "Kopi Trotoar",
+    "Minuman Segar",
+    "Makanan Penutup",
+    "Coffee Shop Indonesia",
+  ],
+  ogImage: "https://kotacoffee.vercel.app/og-image.png",
   navItems: [
     {
       label: "Beranda",
@@ -16,16 +26,9 @@ export const siteConfig = {
       label: "Dashboard",
       href: "/dashboard",
     },
-    {
-      label: "Admin Dashboard",
-      href: "/admin/dashboard",
-    },
   ],
   links: {
-    github: "https://github.com/heroui-inc/heroui",
-    twitter: "https://twitter.com/hero_ui",
-    docs: "https://heroui.com",
-    discord: "https://discord.gg/9b6yyZKmH4",
-    sponsor: "https://patreon.com/jrgarciadev",
+    github: "https://github.com/Ahmadfauzan280503/kotacoffee",
+    instagram: "https://instagram.com/kotacoffee.id",
   },
 };

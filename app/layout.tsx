@@ -16,8 +16,34 @@ export const metadata: Metadata = {
     template: `%s - ${siteConfig.name}`,
   },
   description: siteConfig.description,
+  keywords: siteConfig.keywords,
+  authors: [{ name: "KotaCoffee" }],
+  creator: "KotaCoffee",
+  openGraph: {
+    type: "website",
+    locale: "id_ID",
+    url: "https://kotacoffee.vercel.app",
+    siteName: siteConfig.name,
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [
+      {
+        url: siteConfig.ogImage,
+        width: 1200,
+        height: 630,
+        alt: siteConfig.name,
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: siteConfig.name,
+    description: siteConfig.description,
+    images: [siteConfig.ogImage],
+  },
   icons: {
     icon: "/images/logo-kotacoffee.png",
+    apple: "/images/logo-kotacoffee.png",
   },
 };
 
