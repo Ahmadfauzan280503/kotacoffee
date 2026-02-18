@@ -64,4 +64,4 @@ npm run dev
 
 ## 🌐 Live Demo
 
-[Sayur Segar](https://fe-sayur-segar.vercel.app/)
+[Kotacoffee.id](https://fe-sayur-segar.vercel.app/)
