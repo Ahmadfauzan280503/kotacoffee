@@ -32,7 +32,7 @@ kotacoffee/
 ### 1. Clone Repository
 
 ```bash
-  git clone https://github.com/fahrurrzl/fe-sayur-segar.git
+  git clone https://github.com/Ahmadfauzan280503/kotacoffee.git
   cd kotacoffee
 ```
 
