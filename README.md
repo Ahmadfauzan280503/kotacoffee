@@ -1,9 +1,5 @@
 # Kotacoffee.id
 
-![App Screenshot](./public/images/ss.png)
-
-Sebuah website jual beli sayur online yang dirancang untuk memudahkan konsumen membeli sayuran segar langsung dari petani atau supplier. Sistem ini menyediakan katalog produk, fitur transaksi online, serta manajemen data produk dan pesanan.
-
 ## 🚀 Tech Stack
 
 - Framework: [NextJS](https://nextjs.org/) 14 (App Router)
