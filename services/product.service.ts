@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 import { TProductInput } from "@/types/product";
 
 export default {

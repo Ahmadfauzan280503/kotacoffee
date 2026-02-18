@@ -1,6 +1,5 @@
 "use client";
 
-import useSeller from "@/hooks/useSeller";
 import { Button } from "@heroui/button";
 import {
   Card,
@@ -19,6 +18,8 @@ import { BsBank, BsCreditCard, BsPerson } from "react-icons/bs";
 import { FaArrowLeft, FaStore } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineDescription } from "react-icons/md";
+
+import useSeller from "@/hooks/useSeller";
 
 export const banks = [
   { key: "bca", label: "BCA" },
@@ -66,7 +67,7 @@ const StoreForm = () => {
         </div>
       </div>
       <div>
-        <form onSubmit={handleSubmit(handleUpdateStore)} className="space-y-4">
+        <form className="space-y-4" onSubmit={handleSubmit(handleUpdateStore)}>
           <Card>
             <CardHeader className="flex flex-col gap-w items-start">
               <h2 className="text-lg font-semibold">Detail Produk</h2>
@@ -88,18 +89,18 @@ const StoreForm = () => {
                     >
                       <div className="space-y-1">
                         <Controller
-                          name="storeName"
                           control={control}
+                          name="storeName"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.storeName}
                               label="Nama Lapak"
                               placeholder="Masukkan nama lapak"
-                              variant="bordered"
                               startContent={
                                 <FaStore className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                               }
-                              isInvalid={!!errors.storeName}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -117,18 +118,18 @@ const StoreForm = () => {
                     >
                       <div className="space-y-1">
                         <Controller
-                          name="description"
                           control={control}
+                          name="description"
                           render={({ field }) => (
                             <Textarea
                               {...field}
+                              isInvalid={!!errors.description}
                               label="Deskripsi"
                               placeholder="Masukkan deskripsi lapak Anda"
-                              variant="bordered"
                               startContent={
                                 <MdOutlineDescription className="h-5 w-5 text-gray-400 dark:text-gray-400" />
                               }
-                              isInvalid={!!errors.description}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -154,18 +155,18 @@ const StoreForm = () => {
                     >
                       <div className="space-y-1">
                         <Controller
-                          name="storeLocation"
                           control={control}
+                          name="storeLocation"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.storeLocation}
                               label="Lokasi Lapak"
-                              variant="bordered"
                               placeholder="Masukkan lokasi lapak"
                               startContent={
                                 <FiMapPin className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                               }
-                              isInvalid={!!errors.storeLocation}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -183,21 +184,21 @@ const StoreForm = () => {
                     >
                       <div className="space-y-1">
                         <Controller
-                          name="bankName"
                           control={control}
+                          name="bankName"
                           render={({ field }) => (
                             <Select
                               {...field}
                               defaultSelectedKeys={[
                                 `${dataSeller?.seller?.bankName}`,
                               ]}
+                              isInvalid={!!errors.bankName}
                               label="Nama Bank"
-                              variant="bordered"
                               placeholder="Pilih nama bank"
                               startContent={
                                 <BsBank className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                               }
-                              isInvalid={!!errors.bankName}
+                              variant="bordered"
                             >
                               {banks.map((bank) => (
                                 <SelectItem key={bank.key}>
@@ -221,18 +222,18 @@ const StoreForm = () => {
                     >
                       <div className="space-y-1">
                         <Controller
-                          name="accountName"
                           control={control}
+                          name="accountName"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.accountName}
                               label="Nama Rekening"
-                              variant="bordered"
                               placeholder="Masukkan nama rekening"
                               startContent={
                                 <BsPerson className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                               }
-                              isInvalid={!!errors.accountName}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -250,18 +251,18 @@ const StoreForm = () => {
                     >
                       <div className="space-y-1">
                         <Controller
-                          name="accountNumber"
                           control={control}
+                          name="accountNumber"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.accountNumber}
                               label="Nomor Rekening"
-                              variant="bordered"
                               placeholder="Masukkan nomor rekening"
                               startContent={
                                 <BsCreditCard className="h-4 w-4 text-gray-400 dark:text-gray-400" />
                               }
-                              isInvalid={!!errors.accountNumber}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -455,18 +456,18 @@ const StoreForm = () => {
           </Card>
           <div className="flex justify-end gap-2">
             <Button
+              disabled={isPendingUpdateSeller}
               variant="flat"
               onPress={() => router.back()}
-              disabled={isPendingUpdateSeller}
             >
               Batal
             </Button>
             <Button
-              type="submit"
-              color="success"
               className="text-white"
+              color="success"
               disabled={isPendingUpdateSeller}
               isLoading={isPendingUpdateSeller}
+              type="submit"
             >
               Simpan
             </Button>

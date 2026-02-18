@@ -9,7 +9,7 @@ import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import { Session } from "next-auth";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ToastProvider } from "@heroui/react";
+import { ToastProvider } from "@heroui/toast";
 
 export interface ProvidersProps {
   children: React.ReactNode;
@@ -29,6 +29,8 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
+      staleTime: 60_000, // 60 seconds — reuse cached data on re-navigation
+      retry: 1, // only retry once on failure
     },
   },
 });
@@ -37,7 +39,7 @@ export function Providers({ session, children, themeProps }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <SessionProvider session={session}>
+    <SessionProvider session={session as any}>
       <HeroUIProvider navigate={router.push} skipFramerMotionAnimations={true}>
         <ToastProvider placement="top-center" toastProps={{ timeout: 3000 }} />
         <QueryClientProvider client={queryClient}>

@@ -1,8 +1,5 @@
 "use client";
 
-import LoadingSpinner from "@/components/loading-spinner";
-import { IUserResponse } from "@/types/user";
-import { formatDate } from "@/utils/dateFormat";
 import {
   Avatar,
   Button,
@@ -19,6 +16,10 @@ import { FaMapPin, FaUser } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { MdCalendarMonth, MdEmail, MdPhone } from "react-icons/md";
 
+import { formatDate } from "@/utils/dateFormat";
+import { IUserResponse } from "@/types/user";
+import LoadingSpinner from "@/components/loading-spinner";
+
 const ModalUser = ({
   isOpen,
   onClose,
@@ -31,13 +32,14 @@ const ModalUser = ({
   isLoading: boolean;
 }) => {
   if (isLoading) return <LoadingSpinner />;
+
   return (
     <Modal
+      backdrop="blur"
       isOpen={isOpen}
+      scrollBehavior="outside"
       size="2xl"
       onClose={onClose}
-      scrollBehavior="outside"
-      backdrop="blur"
     >
       <ModalContent>
         {(onClose) => (
@@ -50,14 +52,14 @@ const ModalUser = ({
               {/* User Avatar and Basic Info */}
               <div className="flex items-start gap-4">
                 <Avatar
+                  className="text-lg"
+                  name={user?.name}
+                  size="lg"
                   src={
                     user?.photo
                       ? user?.photo
                       : `https://ui-avatars.com/api/?name=${user?.name}&background=random`
                   }
-                  name={user?.name}
-                  size="lg"
-                  className="text-lg"
                 />
 
                 <div className="flex-1">
@@ -66,12 +68,12 @@ const ModalUser = ({
                   <div className="flex gap-2 mt-2">
                     <Chip
                       color={user?.isActive ? "success" : "warning"}
-                      variant="bordered"
                       size="sm"
+                      variant="bordered"
                     >
                       {user?.isActive ? "active" : "inactive"}
                     </Chip>
-                    <Chip variant="flat" size="sm">
+                    <Chip size="sm" variant="flat">
                       Role: {user?.role}
                     </Chip>
                   </div>

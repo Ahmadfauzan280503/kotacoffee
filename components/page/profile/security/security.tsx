@@ -4,8 +4,9 @@ import React from "react";
 import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react";
 import { FaEye, FaEyeSlash, FaKey, FaUserShield } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import useChangePassword from "@/hooks/useChangePassword";
 import { Controller } from "react-hook-form";
+
+import useChangePassword from "@/hooks/useChangePassword";
 
 const Security = () => {
   const router = useRouter();
@@ -39,28 +40,19 @@ const Security = () => {
 
         <CardBody>
           <form
-            onSubmit={handleSubmit(handleChangePassword)}
             className="space-y-8"
+            onSubmit={handleSubmit(handleChangePassword)}
           >
             {/* Basic Information */}
             <div className="space-y-6">
               <div>
                 <div className="grid grid-cols-1 gap-4">
                   <Controller
-                    name="oldPassword"
                     control={control}
+                    name="oldPassword"
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label="Kata Sandi Lama"
-                        placeholder="Masukkan kata sandi lama"
-                        startContent={
-                          <FaKey className="h-4 w-4 text-gray-400" />
-                        }
-                        variant="bordered"
-                        isInvalid={!!errors.oldPassword}
-                        errorMessage={errors.oldPassword?.message}
-                        type={isVisibleOldPassword ? "text" : "password"}
                         endContent={
                           <button
                             aria-label="toggle password visibility"
@@ -77,25 +69,25 @@ const Security = () => {
                             )}
                           </button>
                         }
+                        errorMessage={errors.oldPassword?.message}
+                        isInvalid={!!errors.oldPassword}
+                        label="Kata Sandi Lama"
+                        placeholder="Masukkan kata sandi lama"
+                        startContent={
+                          <FaKey className="h-4 w-4 text-gray-400" />
+                        }
+                        type={isVisibleOldPassword ? "text" : "password"}
+                        variant="bordered"
                       />
                     )}
                   />
 
                   <Controller
-                    name="newPassword"
                     control={control}
+                    name="newPassword"
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label="Kata Sandi Baru"
-                        placeholder="Masukkan kata sandi baru"
-                        startContent={
-                          <FaKey className="h-4 w-4 text-gray-400" />
-                        }
-                        variant="bordered"
-                        isInvalid={!!errors.newPassword}
-                        errorMessage={errors.newPassword?.message}
-                        type={isVisibleNewPassword ? "text" : "password"}
                         endContent={
                           <button
                             aria-label="toggle password visibility"
@@ -112,25 +104,25 @@ const Security = () => {
                             )}
                           </button>
                         }
+                        errorMessage={errors.newPassword?.message}
+                        isInvalid={!!errors.newPassword}
+                        label="Kata Sandi Baru"
+                        placeholder="Masukkan kata sandi baru"
+                        startContent={
+                          <FaKey className="h-4 w-4 text-gray-400" />
+                        }
+                        type={isVisibleNewPassword ? "text" : "password"}
+                        variant="bordered"
                       />
                     )}
                   />
 
                   <Controller
-                    name="confirmPassword"
                     control={control}
+                    name="confirmPassword"
                     render={({ field }) => (
                       <Input
                         {...field}
-                        label="Konfirmasi Kata Sandi Baru"
-                        placeholder="Masukkan konfirmasi kata sandi baru"
-                        startContent={
-                          <FaKey className="h-4 w-4 text-gray-400" />
-                        }
-                        variant="bordered"
-                        isInvalid={!!errors.confirmPassword}
-                        errorMessage={errors.confirmPassword?.message}
-                        type={isVisibleConfirmPassword ? "text" : "password"}
                         endContent={
                           <button
                             aria-label="toggle password visibility"
@@ -138,7 +130,7 @@ const Security = () => {
                             type="button"
                             onClick={() =>
                               setIsVisibleConfirmPassword(
-                                !isVisibleConfirmPassword
+                                !isVisibleConfirmPassword,
                               )
                             }
                           >
@@ -149,6 +141,15 @@ const Security = () => {
                             )}
                           </button>
                         }
+                        errorMessage={errors.confirmPassword?.message}
+                        isInvalid={!!errors.confirmPassword}
+                        label="Konfirmasi Kata Sandi Baru"
+                        placeholder="Masukkan konfirmasi kata sandi baru"
+                        startContent={
+                          <FaKey className="h-4 w-4 text-gray-400" />
+                        }
+                        type={isVisibleConfirmPassword ? "text" : "password"}
+                        variant="bordered"
                       />
                     )}
                   />
@@ -158,15 +159,15 @@ const Security = () => {
 
             {/* Action Buttons */}
             <div className="flex gap-4 pt-6">
-              <Button type="button" variant="bordered" className="flex-1">
+              <Button className="flex-1" type="button" variant="bordered">
                 Batal
               </Button>
               <Button
-                isLoading={isPendingChangePassword}
-                disabled={isPendingChangePassword}
-                type="submit"
-                color="success"
                 className="flex-1 text-white"
+                color="success"
+                disabled={isPendingChangePassword}
+                isLoading={isPendingChangePassword}
+                type="submit"
               >
                 Simpan Perubahan
               </Button>

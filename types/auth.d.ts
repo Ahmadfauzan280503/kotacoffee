@@ -8,8 +8,10 @@ export interface IRegister {
   confirmPassword: string;
 }
 
-export interface IUpdateUser
-  extends Omit<IRegister, "password" | "confirmPassword"> {
+export interface IUpdateUser extends Omit<
+  IRegister,
+  "password" | "confirmPassword"
+> {
   gender?: string;
   birthDate?: CalendarDate | null;
   photo?: string;

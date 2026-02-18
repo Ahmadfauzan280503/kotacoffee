@@ -1,15 +1,17 @@
 "use client";
 
-import DataTable from "@/components/data-table";
-import useChangeUrl from "@/hooks/useChangeUrl";
-import useUser from "@/hooks/useUser";
 import { Avatar } from "@heroui/avatar";
 import { Button, Chip, Tooltip, useDisclosure } from "@heroui/react";
 import { Key, useCallback, useEffect } from "react";
 import { FiEye, FiTrash } from "react-icons/fi";
+
 import { columns } from "./columns";
 import ModalUser from "./modal-user";
 import ModalDelete from "./modal-delete";
+
+import useUser from "@/hooks/useUser";
+import useChangeUrl from "@/hooks/useChangeUrl";
+import DataTable from "@/components/data-table";
 
 const User = () => {
   const {
@@ -48,6 +50,7 @@ const User = () => {
             <div className="flex items-center gap-2">
               <div>
                 <Avatar
+                  showFallback
                   className="w-10 h-10 mx-auto border-4 border-emerald-200"
                   name={`${user?.name}`}
                   src={
@@ -55,7 +58,6 @@ const User = () => {
                       ? user?.photo
                       : `https://ui-avatars.com/api/?name=${user?.name}&background=random`
                   }
-                  showFallback
                 />
               </div>
               <div className="flex flex-col items-start">
@@ -71,10 +73,10 @@ const User = () => {
         case "isActive":
           return (
             <Chip
-              size="sm"
-              color={cellValue ? "success" : "warning"}
-              variant="bordered"
               className="flex items-center gap-1"
+              color={cellValue ? "success" : "warning"}
+              size="sm"
+              variant="bordered"
             >
               {cellValue ? "Active" : "Inactive"}
             </Chip>
@@ -86,10 +88,10 @@ const User = () => {
               <Tooltip color="primary" content="Detail User">
                 <Button
                   isIconOnly
+                  className="cursor-pointer active:opacity-50"
+                  color="primary"
                   size="sm"
                   variant="light"
-                  color="primary"
-                  className="cursor-pointer active:opacity-50"
                   onPress={() => {
                     onOpenDetail();
                     setSellectedId(user?.id);
@@ -101,10 +103,10 @@ const User = () => {
               <Tooltip color="danger" content="Hapus User">
                 <Button
                   isIconOnly
+                  className="cursor-pointer active:opacity-50"
+                  color="danger"
                   size="sm"
                   variant="light"
-                  color="danger"
-                  className="cursor-pointer active:opacity-50"
                   onPress={() => {
                     onOpenDelete();
                     setSellectedId(user?.id);
@@ -119,35 +121,37 @@ const User = () => {
           return cellValue;
       }
     },
-    []
+    [],
   );
+
   return (
     <>
       <ModalDelete
-        setSelectedUser={setSellectedId}
-        selectedUser={sellectedId}
         isOpen={isOpenDelete}
+        selectedUser={sellectedId}
+        setSelectedUser={setSellectedId}
         onClose={onCloseDelete}
         onOpenChange={onOpenDelete}
       />
       <ModalUser
-        isOpen={isOpenDetail}
-        onClose={onCloseDetail}
-        user={dataUser?.data}
         isLoading={isLoadingDataUser}
+        isOpen={isOpenDetail}
+        user={dataUser?.data}
+        onClose={onCloseDetail}
       />
       <DataTable
-        title="User / Pengguna"
-        description="Kelola user / pengguna"
         columns={columns}
+        currentPage={dataUsers?.data?.currentPage}
         data={dataUsers?.data?.users || []}
-        renderCell={renderCell as any}
+        description="Kelola user / pengguna"
         emptyContent="Belum ada users yang terdaftar"
         isLoading={isLoadingDataUsers}
-        currentPage={dataUsers?.data?.currentPage}
+        renderCell={renderCell as any}
+        title="User / Pengguna"
         totalPage={dataUsers?.data?.totalPage}
       />
     </>
   );
 };
+
 export default User;

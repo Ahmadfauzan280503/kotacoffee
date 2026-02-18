@@ -7,11 +7,13 @@ export type TProductInput = {
   categoryId: string;
   description: string;
   imageUrl: string;
+  isFeatured?: boolean;
 };
 
 export type TProduct = Omit<TProductInput, "imageUrl"> & {
   id: string;
   imageUrl: string;
+  isFeatured: boolean;
   createdAt: string;
   updatedAt: string;
   seller: {
@@ -19,6 +21,8 @@ export type TProduct = Omit<TProductInput, "imageUrl"> & {
     storeLocation: string;
     storeName: string;
     userId: string;
+    store_location?: string;
+    store_name?: string;
   };
   Unit: {
     id: string;

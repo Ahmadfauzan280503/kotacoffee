@@ -2,10 +2,11 @@
 
 import { Button, Card, CardBody, CardHeader } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import { FiArrowRight, FiCheckCircle } from "react-icons/fi";
+import { FiCheckCircle } from "react-icons/fi";
 
 const RegisterSuccess = () => {
   const router = useRouter();
+
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient w-full p-4">
       <Card className="w-full max-w-md text-center">
@@ -31,8 +32,8 @@ const RegisterSuccess = () => {
 
           <div className="space-y-3">
             <Button
-              variant="bordered"
               className="w-full"
+              variant="bordered"
               onPress={() => router.push("/")}
             >
               Kembali ke Beranda
@@ -43,4 +44,5 @@ const RegisterSuccess = () => {
     </div>
   );
 };
+
 export default RegisterSuccess;

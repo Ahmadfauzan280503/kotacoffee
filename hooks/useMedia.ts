@@ -1,22 +1,25 @@
-import mediaService from "@/services/media.service";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+
+import mediaService from "@/services/media.service";
 
 const useMedia = () => {
   const { data: session } = useSession();
   // upload service
   const uploadFile = async (
     file: File,
-    callback: (fileUrl: string) => void
+    callback: (fileUrl: string) => void,
   ) => {
     const formData = new FormData();
-    formData.append("image", file);
+
+    formData.append("file", file);
 
     const {
       data: {
-        data: { secure_url: fileUrl },
+        data: { url: fileUrl },
       },
     } = await mediaService.upload(formData, session?.user.token as string);
+
     callback(fileUrl);
   };
 
@@ -35,11 +38,13 @@ const useMedia = () => {
   // handle upload
   const handleUploadFile = (
     files: FileList,
-    onChnage: (files: FileList | undefined) => void,
-    callback: (fileUrl?: string) => void
+    _onChange: (files: FileList | undefined) => void,
+    callback: (fileUrl?: string) => void,
   ) => {
     if (files.length !== 0) {
-      onChnage(files);
+      // Note: We removed onChange(files) call here because it was storing FileList
+      // to form state, causing "Invalid input: expected string, received FileList" error.
+      // The callback already handles setting imageUrl after upload succeeds.
       mutateUploadFile({
         file: files[0],
         callback,
@@ -51,9 +56,10 @@ const useMedia = () => {
   const deleteFile = async (
     fileUrl: string,
     callback: () => void,
-    token: string
+    token: string,
   ) => {
     const res = await mediaService.remove(fileUrl, token);
+
     if (res.data.status === 200) {
       callback();
     }
@@ -74,7 +80,7 @@ const useMedia = () => {
   // handle delete
   const handleDeleteFile = (
     fileUrl: string | FileList | undefined,
-    callback: () => void
+    callback: () => void,
   ) => {
     if (typeof fileUrl === "string") {
       mutateDeleteFile({

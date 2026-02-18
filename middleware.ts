@@ -1,6 +1,7 @@
 // middleware.ts
-import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+
+import { NextResponse } from "next/server";
 import { getToken } from "next-auth/jwt";
 
 /**
@@ -33,10 +34,12 @@ export default async function middleware(req: NextRequest) {
   // Jika belum login dan akses route proteksi -> redirect ke login + simpan callbackUrl
   if (!token && isProtected) {
     const signInUrl = new URL("/auth/login", origin);
+
     signInUrl.searchParams.set(
       "callbackUrl",
-      req.nextUrl.pathname + req.nextUrl.search
+      req.nextUrl.pathname + req.nextUrl.search,
     );
+
     return NextResponse.redirect(signInUrl);
   }
 
@@ -46,8 +49,8 @@ export default async function middleware(req: NextRequest) {
   }
 
   // Contoh role-based check untuk /admin
-  if (pathname.startsWith("/admin") && token?.role !== "superadmin") {
-    return NextResponse.redirect(new URL("/not-authorized", origin));
+  if (pathname.startsWith("/admin") && token?.role !== "admin") {
+    return NextResponse.redirect(new URL("/", origin)); // Redirect ke home jika bukan admin
   }
 
   // Lanjutkan request

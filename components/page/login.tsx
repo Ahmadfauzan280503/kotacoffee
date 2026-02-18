@@ -1,10 +1,12 @@
 "use client";
 
-import useLogin from "@/hooks/useLogin";
 import { Button, Card, CardBody, CardHeader, Input } from "@heroui/react";
 import Link from "next/link";
 import { Controller } from "react-hook-form";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { FaEye, FaEyeSlash, FaGoogle } from "react-icons/fa";
+import { signIn } from "next-auth/react";
+
+import useLogin from "@/hooks/useLogin";
 
 const Login = () => {
   const {
@@ -16,6 +18,7 @@ const Login = () => {
     handleLogin,
     isPendingLogin,
   } = useLogin();
+
   return (
     <Card className="w-full max-w-md">
       <CardHeader className="flex flex-col items-center pt-8">
@@ -25,19 +28,19 @@ const Login = () => {
         </p>
       </CardHeader>
       <CardBody>
-        <form onSubmit={handleSubmit(handleLogin)} className="space-y-3">
+        <form className="space-y-3" onSubmit={handleSubmit(handleLogin)}>
           <div className="space-y-1">
             <Controller
-              name="email"
               control={control}
+              name="email"
               render={({ field }) => (
                 <Input
                   {...field}
-                  variant="bordered"
-                  label="Email"
-                  type="email"
-                  placeholder="example@email.com"
                   isInvalid={!!errors.email}
+                  label="Email"
+                  placeholder="example@email.com"
+                  type="email"
+                  variant="bordered"
                 />
               )}
             />
@@ -49,8 +52,8 @@ const Login = () => {
           <div className="space-y-1">
             <div className="relative">
               <Controller
-                name="password"
                 control={control}
+                name="password"
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -68,11 +71,11 @@ const Login = () => {
                         )}
                       </button>
                     }
+                    isInvalid={!!errors.password}
                     label="Password"
                     placeholder="Enter your password"
                     type={isVisiblePassword ? "text" : "password"}
                     variant="bordered"
-                    isInvalid={!!errors.password}
                   />
                 )}
               />
@@ -83,22 +86,42 @@ const Login = () => {
           </div>
 
           <Button
-            isLoading={isPendingLogin}
-            type="submit"
             className="w-full text-white disabled:bg-green-500/50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             color="success"
             disabled={isPendingLogin}
+            isLoading={isPendingLogin}
+            type="submit"
           >
             Masuk
           </Button>
         </form>
 
+        <div className="relative my-6">
+          <div className="absolute inset-0 flex items-center">
+            <span className="w-full border-t border-default-200" />
+          </div>
+          <div className="relative flex justify-center text-xs uppercase">
+            <span className="bg-content1 px-2 text-foreground-500">
+              Atau masuk dengan
+            </span>
+          </div>
+        </div>
+
+        <Button
+          className="w-full flex items-center justify-center gap-2"
+          variant="bordered"
+          onClick={() => signIn("google", { callbackUrl: "/" })}
+        >
+          <FaGoogle className="text-danger" />
+          Google
+        </Button>
+
         <div className="mt-6 text-center">
           <p className="text-sm text-foreground-500">
             Belum punya akun?{" "}
             <Link
-              href="/auth/register"
               className="text-primary hover:underline font-medium"
+              href="/auth/register"
             >
               Daftar di sini
             </Link>
@@ -108,4 +131,5 @@ const Login = () => {
     </Card>
   );
 };
+
 export default Login;

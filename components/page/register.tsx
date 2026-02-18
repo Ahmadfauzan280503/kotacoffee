@@ -1,6 +1,5 @@
 "use client";
 
-import useRegister from "@/hooks/useRegister";
 import {
   Button,
   Card,
@@ -14,7 +13,10 @@ import {
 import Link from "next/link";
 import { Controller } from "react-hook-form";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 import ModalTerms from "./modal-terms";
+
+import useRegister from "@/hooks/useRegister";
 
 const Register = () => {
   const {
@@ -43,20 +45,20 @@ const Register = () => {
         </p>
       </CardHeader>
       <CardBody>
-        <form onSubmit={handleSubmit(handleRegister)} className="space-y-3">
+        <form className="space-y-3" onSubmit={handleSubmit(handleRegister)}>
           <div className="space-y-1">
             <Controller
-              name="name"
               control={control}
+              name="name"
               render={({ field }) => (
                 <Input
                   {...field}
-                  variant="bordered"
-                  label="Nama Lengkap"
-                  type="text"
-                  placeholder="Masukkan nama lengkap"
                   autoFocus
                   isInvalid={!!errors.name}
+                  label="Nama Lengkap"
+                  placeholder="Masukkan nama lengkap"
+                  type="text"
+                  variant="bordered"
                 />
               )}
             />
@@ -67,16 +69,16 @@ const Register = () => {
 
           <div className="space-y-1">
             <Controller
-              name="username"
               control={control}
+              name="username"
               render={({ field }) => (
                 <Input
                   {...field}
-                  variant="bordered"
-                  label="Username"
-                  type="text"
-                  placeholder="Masukkan username"
                   isInvalid={!!errors.username}
+                  label="Username"
+                  placeholder="Masukkan username"
+                  type="text"
+                  variant="bordered"
                 />
               )}
             />
@@ -87,16 +89,16 @@ const Register = () => {
 
           <div className="space-y-1">
             <Controller
-              name="email"
               control={control}
+              name="email"
               render={({ field }) => (
                 <Input
                   {...field}
-                  variant="bordered"
-                  label="Email"
-                  type="email"
-                  placeholder="example@email.com"
                   isInvalid={!!errors.email}
+                  label="Email"
+                  placeholder="example@email.com"
+                  type="email"
+                  variant="bordered"
                 />
               )}
             />
@@ -107,16 +109,16 @@ const Register = () => {
 
           <div className="space-y-1">
             <Controller
-              name="phone"
               control={control}
+              name="phone"
               render={({ field }) => (
                 <Input
                   {...field}
+                  errorMessage={errors.phone?.message}
+                  isInvalid={!!errors.phone}
                   label="Nomor Telepon"
                   placeholder="+62 8123456789"
                   variant="bordered"
-                  isInvalid={!!errors.phone}
-                  errorMessage={errors.phone?.message}
                   onChange={(e) => {
                     let val = e.target.value;
 
@@ -137,16 +139,16 @@ const Register = () => {
 
           <div className="space-y-1">
             <Controller
-              name="address"
               control={control}
+              name="address"
               render={({ field }) => (
                 <Textarea
                   {...field}
-                  variant="bordered"
+                  isInvalid={!!errors.address}
                   label="Alamat"
                   placeholder="Masukkan alamat"
-                  isInvalid={!!errors.address}
-                ></Textarea>
+                  variant="bordered"
+                />
               )}
             />
             {errors.address && (
@@ -157,8 +159,8 @@ const Register = () => {
           <div className="space-y-1">
             <div className="relative">
               <Controller
-                name="password"
                 control={control}
+                name="password"
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -176,11 +178,11 @@ const Register = () => {
                         )}
                       </button>
                     }
+                    isInvalid={!!errors.password}
                     label="Password"
                     placeholder="Enter your password"
                     type={isVisiblePassword ? "text" : "password"}
                     variant="bordered"
-                    isInvalid={!!errors.password}
                   />
                 )}
               />
@@ -193,8 +195,8 @@ const Register = () => {
           <div className="space-y-1">
             <div className="relative">
               <Controller
-                name="confirmPassword"
                 control={control}
+                name="confirmPassword"
                 render={({ field }) => (
                   <Input
                     {...field}
@@ -215,11 +217,11 @@ const Register = () => {
                         )}
                       </button>
                     }
+                    isInvalid={!!errors.confirmPassword}
                     label="Konfirmasi Password"
                     placeholder="Enter your password"
                     type={isVisibleConfirmPassword ? "text" : "password"}
                     variant="bordered"
-                    isInvalid={!!errors.confirmPassword}
                   />
                 )}
               />
@@ -233,16 +235,16 @@ const Register = () => {
 
           <div className="flex items-center space-x-2">
             <Checkbox
-              id="terms"
               checked={agreeToTerms}
+              id="terms"
               onChange={() => setAgreeToTerms(!agreeToTerms)}
             />
-            <label htmlFor="terms" className="text-sm">
+            <label className="text-sm" htmlFor="terms">
               Saya setuju dengan{" "}
               <button
+                className="text-primary hover:underline cursor-pointer"
                 type="button"
                 onClick={onOpenChange}
-                className="text-primary hover:underline cursor-pointer"
               >
                 syarat dan ketentuan
               </button>
@@ -250,11 +252,11 @@ const Register = () => {
           </div>
           <ModalTerms isOpen={isOpen} onOpenChange={onOpenChange} />
           <Button
-            isLoading={isPendingRegister}
-            type="submit"
             className="w-full text-white disabled:bg-green-500/50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
             color="success"
             disabled={!agreeToTerms || isPendingRegister}
+            isLoading={isPendingRegister}
+            type="submit"
           >
             Daftar
           </Button>
@@ -264,8 +266,8 @@ const Register = () => {
           <p className="text-sm text-foreground-500">
             Sudah punya akun?{" "}
             <Link
-              href="/auth/login"
               className="text-primary hover:underline font-medium"
+              href="/auth/login"
             >
               Masuk di sini
             </Link>
@@ -275,4 +277,5 @@ const Register = () => {
     </Card>
   );
 };
+
 export default Register;

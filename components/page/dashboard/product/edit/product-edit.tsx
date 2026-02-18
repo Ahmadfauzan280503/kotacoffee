@@ -1,11 +1,12 @@
-import { TProductResponse } from "@/types/product";
 import ProductForm from "../product-form";
+
+import { TProductResponse } from "@/types/product";
 
 interface PropTypes {
   data: TProductResponse;
 }
 const ProductEdit = ({ data }: PropTypes) => {
-  return <ProductForm type="edit" data={data} />;
+  return <ProductForm data={data} type="edit" />;
 };
 
 export default ProductEdit;

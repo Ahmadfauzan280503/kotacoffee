@@ -11,11 +11,12 @@ import {
 } from "react";
 import {
   AnimatePresence,
-  MotionConfig,
   motion,
-  Transition,
-  Variants,
-} from "motion/react";
+  MotionConfig,
+  type Transition,
+  type Variants,
+} from "framer-motion";
+
 import cn from "@/utils/cn";
 
 const TRANSITION = {
@@ -92,8 +93,8 @@ function MorphingPopover({
     <MorphingPopoverContext.Provider value={{ ...popoverLogic, variants }}>
       <MotionConfig transition={transition}>
         <div
-          className={cn("relative flex items-center justify-center", className)}
           key={popoverLogic.uniqueId}
+          className={cn("relative flex items-center justify-center", className)}
           {...props}
         >
           {children}
@@ -116,27 +117,28 @@ function MorphingPopoverTrigger({
   ...props
 }: MorphingPopoverTriggerProps) {
   const context = useContext(MorphingPopoverContext);
+
   if (!context) {
     throw new Error(
-      "MorphingPopoverTrigger must be used within MorphingPopover"
+      "MorphingPopoverTrigger must be used within MorphingPopover",
     );
   }
 
   if (asChild && isValidElement(children)) {
     const MotionComponent = motion.create(
-      children.type as React.ForwardRefExoticComponent<any>
+      children.type as React.ForwardRefExoticComponent<any>,
     );
     const childProps = children.props as Record<string, unknown>;
 
     return (
       <MotionComponent
         {...childProps}
-        onClick={context.open}
-        layoutId={`popover-trigger-${context.uniqueId}`}
-        className={childProps.className}
         key={context.uniqueId}
-        aria-expanded={context.isOpen}
         aria-controls={`popover-content-${context.uniqueId}`}
+        aria-expanded={context.isOpen}
+        className={childProps.className}
+        layoutId={`popover-trigger-${context.uniqueId}`}
+        onClick={context.open}
       />
     );
   }
@@ -149,11 +151,11 @@ function MorphingPopoverTrigger({
     >
       <motion.button
         {...props}
-        layoutId={`popover-label-${context.uniqueId}`}
         key={context.uniqueId}
-        className={className}
-        aria-expanded={context.isOpen}
         aria-controls={`popover-content-${context.uniqueId}`}
+        aria-expanded={context.isOpen}
+        className={className}
+        layoutId={`popover-label-${context.uniqueId}`}
       >
         {children}
       </motion.button>
@@ -172,9 +174,10 @@ function MorphingPopoverContent({
   ...props
 }: MorphingPopoverContentProps) {
   const context = useContext(MorphingPopoverContext);
+
   if (!context)
     throw new Error(
-      "MorphingPopoverContent must be used within MorphingPopover"
+      "MorphingPopoverContent must be used within MorphingPopover",
     );
 
   const ref = useRef<HTMLDivElement>(null);
@@ -187,6 +190,7 @@ function MorphingPopoverContent({
     };
 
     document.addEventListener("keydown", handleKeyDown);
+
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [context.isOpen, context.close]);
 
@@ -196,19 +200,19 @@ function MorphingPopoverContent({
         <>
           <motion.div
             {...props}
-            ref={ref}
-            layoutId={`popover-trigger-${context.uniqueId}`}
             key={context.uniqueId}
-            id={`popover-content-${context.uniqueId}`}
-            role="dialog"
+            ref={ref}
+            animate="animate"
             aria-modal="true"
             className={cn(
               "absolute overflow-hidden rounded-md border border-zinc-950/10 bg-white p-2 text-zinc-950 shadow-md dark:border-zinc-50/10 dark:bg-zinc-700 dark:text-zinc-50",
-              className
+              className,
             )}
-            initial="initial"
-            animate="animate"
             exit="exit"
+            id={`popover-content-${context.uniqueId}`}
+            initial="initial"
+            layoutId={`popover-trigger-${context.uniqueId}`}
+            role="dialog"
             variants={context.variants}
           >
             {children}

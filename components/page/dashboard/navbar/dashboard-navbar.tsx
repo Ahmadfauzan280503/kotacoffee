@@ -1,12 +1,13 @@
 "use client";
 
-import useProfile from "@/hooks/useProfile";
 import { Button } from "@heroui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HiOutlineCube, HiShoppingCart } from "react-icons/hi";
 import { LuWallet } from "react-icons/lu";
 import { MdDashboard, MdReceipt, MdStore } from "react-icons/md";
+
+import useProfile from "@/hooks/useProfile";
 
 const menuItems = [
   {
@@ -45,7 +46,7 @@ const DashboardNavbar = () => {
   const pathname = usePathname();
   const { dataUser } = useProfile();
   const isSellerVerified =
-    dataUser?.Seller[0]?.verified && dataUser?.Seller?.length;
+    dataUser?.Seller?.[0]?.verified && dataUser?.Seller?.length;
 
   return (
     <nav className="flex-1 p-4">
@@ -64,18 +65,18 @@ const DashboardNavbar = () => {
           }
           const isActive = pathname === item.href;
           const IconComponent = item.icon;
+
           return (
             <Button
               key={item.name}
               as={Link}
-              href={item.href}
-              variant={isActive ? "flat" : "light"}
-              color={isActive ? "success" : "default"}
               className={`w-full justify-start h-12 ${
                 isActive
                   ? "bg-green-100 text-green-700 border-r-2 rounded-r-sm border-green-600 dark:border-emerald-600 dark:bg-emerald-900 dark:text-emerald-100"
                   : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
               }`}
+              color={isActive ? "success" : "default"}
+              href={item.href}
               startContent={
                 <IconComponent
                   className={`w-5 h-5 ${
@@ -85,6 +86,7 @@ const DashboardNavbar = () => {
                   }`}
                 />
               }
+              variant={isActive ? "flat" : "light"}
             >
               {item.name}
             </Button>

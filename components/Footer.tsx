@@ -1,5 +1,6 @@
 import { FaFacebook, FaInstagram, FaMapPin, FaPhone } from "react-icons/fa";
 import { FiMail } from "react-icons/fi";
+
 import { Logo, TwitterIcon } from "./icons";
 
 const Footer = () => {
@@ -10,14 +11,14 @@ const Footer = () => {
           {/* Brand & Description */}
           <div className="space-y-4">
             <div className="flex items-center gap-2">
-              <Logo width={60} height={60} />
+              <Logo height={60} width={60} />
               <span className="text-xl font-bold text-foreground">
-                SayurSegar
+                Kotacoffee.id
               </span>
             </div>
             <p className="text-foreground-500 text-sm leading-relaxed">
-              Marketplace sayuran segar yang menghubungkan petani lokal dengan
-              konsumen. Dapatkan sayuran berkualitas tinggi langsung dari
+              Marketplace kopi berkualitas yang menghubungkan petani lokal
+              dengan pecinta kopi. Dapatkan biji kopi terbaik langsung dari
               sumbernya.
             </p>
             <div className="flex space-x-4">
@@ -33,32 +34,32 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="#"
                   className="text-foreground-500 hover:text-success transition-colors"
+                  href="#"
                 >
                   Beranda
                 </a>
               </li>
               <li>
                 <a
-                  href="#products"
                   className="text-foreground-500 hover:text-success transition-colors"
+                  href="#products"
                 >
                   Produk
                 </a>
               </li>
               <li>
                 <a
-                  href="#categories"
                   className="text-foreground-500 hover:text-success transition-colors"
+                  href="#categories"
                 >
                   Kategori
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
                   className="text-foreground-500 hover:text-success transition-colors"
+                  href="#"
                 >
                   Tentang Kami
                 </a>
@@ -72,42 +73,18 @@ const Footer = () => {
             <ul className="space-y-2 text-sm">
               <li>
                 <a
-                  href="#"
                   className="text-foreground-500 hover:text-success transition-colors"
+                  href="#"
                 >
                   Daftar Jual
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
                   className="text-foreground-500 hover:text-success transition-colors"
+                  href="#"
                 >
                   Dashboard
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-foreground-500 hover:text-success transition-colors"
-                >
-                  Panduan
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-foreground-500 hover:text-success transition-colors"
-                >
-                  Bantuan
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  className="text-foreground-500 hover:text-success transition-colors"
-                >
-                  FAQ
                 </a>
               </li>
             </ul>
@@ -119,18 +96,18 @@ const Footer = () => {
             <div className="space-y-3 text-sm">
               <div className="flex items-center space-x-2">
                 <FiMail className="w-4 h-4 text-success" />
-                <span className="text-foreground-500">info@sayursegar.com</span>
+                <span className="text-foreground-500">info@kotacoffee.com</span>
               </div>
               <div className="flex items-center space-x-2">
                 <FaPhone className="w-4 h-4 text-success" />
-                <span className="text-foreground-500">0812-3456-7890</span>
+                <span className="text-foreground-500">0821-7756-1275</span>
               </div>
               <div className="flex items-start space-x-2">
                 <FaMapPin className="w-4 h-4 text-success mt-0.5" />
                 <span className="text-foreground-500">
-                  Jl. Tani Makmur No. 123
+                  Jl. A.P. Pettarani
                   <br />
-                  Jakarta Selatan 12345
+                  Makassar, Sulawesi Selatan
                 </span>
               </div>
             </div>
@@ -140,24 +117,24 @@ const Footer = () => {
         <div className="border-t border-gray-200 dark:border-y-zinc-900 mt-8 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <p className="text-sm text-foreground">
-              © 2024 SayurSegar. Semua hak cipta dilindungi.
+              © 2026 KotaCoffee. Semua hak cipta dilindungi.
             </p>
             <div className="flex space-x-6 text-sm">
               <a
-                href="#"
                 className="text-foreground hover:text-fresh transition-colors"
+                href="#"
               >
                 Syarat & Ketentuan
               </a>
               <a
-                href="#"
                 className="text-foreground hover:text-fresh transition-colors"
+                href="#"
               >
                 Kebijakan Privasi
               </a>
               <a
-                href="#"
                 className="text-foreground hover:text-fresh transition-colors"
+                href="#"
               >
                 Bantuan
               </a>
@@ -168,4 +145,5 @@ const Footer = () => {
     </footer>
   );
 };
+
 export default Footer;

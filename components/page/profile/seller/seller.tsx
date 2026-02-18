@@ -1,7 +1,5 @@
 "use client";
 
-import useProfile from "@/hooks/useProfile";
-import useSeller from "@/hooks/useSeller";
 import { Button } from "@heroui/button";
 import {
   Alert,
@@ -19,6 +17,9 @@ import { BsBank, BsCreditCard, BsPerson } from "react-icons/bs";
 import { FaStore } from "react-icons/fa";
 import { FiMapPin } from "react-icons/fi";
 import { MdOutlineDescription } from "react-icons/md";
+
+import useSeller from "@/hooks/useSeller";
+import useProfile from "@/hooks/useProfile";
 
 export const banks = [
   { key: "bca", label: "BCA" },
@@ -71,8 +72,8 @@ const Seller = () => {
 
             <CardBody>
               <form
-                onSubmit={handleSubmit(handleCreateSeller)}
                 className="space-y-4"
+                onSubmit={handleSubmit(handleCreateSeller)}
               >
                 {/* Basic Information */}
                 <div className="space-y-4">
@@ -83,18 +84,18 @@ const Seller = () => {
                     <div className="grid grid-cols-1 gap-6">
                       <div className="space-y-1">
                         <Controller
-                          name="storeName"
                           control={control}
+                          name="storeName"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.storeName}
                               label="Nama Lapak"
                               placeholder="Masukkan nama lapak"
-                              variant="bordered"
                               startContent={
                                 <FaStore className="h-4 w-4 text-gray-400" />
                               }
-                              isInvalid={!!errors.storeName}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -107,18 +108,18 @@ const Seller = () => {
 
                       <div className="space-y-1">
                         <Controller
-                          name="description"
                           control={control}
+                          name="description"
                           render={({ field }) => (
                             <Textarea
                               {...field}
+                              isInvalid={!!errors.description}
                               label="Deskripsi"
                               placeholder="Masukkan deskripsi lapak Anda"
-                              variant="bordered"
                               startContent={
                                 <MdOutlineDescription className="h-5 w-5 text-gray-400" />
                               }
-                              isInvalid={!!errors.description}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -139,18 +140,18 @@ const Seller = () => {
                     <div className="space-y-4">
                       <div className="space-y-1">
                         <Controller
-                          name="storeLocation"
                           control={control}
+                          name="storeLocation"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.storeLocation}
                               label="Lokasi Lapak"
-                              variant="bordered"
                               placeholder="Masukkan lokasi lapak"
                               startContent={
                                 <FiMapPin className="h-4 w-4 text-gray-400" />
                               }
-                              isInvalid={!!errors.storeLocation}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -163,18 +164,18 @@ const Seller = () => {
 
                       <div className="space-y-1">
                         <Controller
-                          name="bankName"
                           control={control}
+                          name="bankName"
                           render={({ field }) => (
                             <Select
                               {...field}
+                              isInvalid={!!errors.bankName}
                               label="Nama Bank"
-                              variant="bordered"
                               placeholder="Pilih nama bank"
                               startContent={
                                 <BsBank className="h-4 w-4 text-gray-400" />
                               }
-                              isInvalid={!!errors.bankName}
+                              variant="bordered"
                             >
                               {banks.map((bank) => (
                                 <SelectItem key={bank.key}>
@@ -193,18 +194,18 @@ const Seller = () => {
 
                       <div className="space-y-1">
                         <Controller
-                          name="accountName"
                           control={control}
+                          name="accountName"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.accountName}
                               label="Nama Rekening"
-                              variant="bordered"
                               placeholder="Masukkan nama rekening"
                               startContent={
                                 <BsPerson className="h-4 w-4 text-gray-400" />
                               }
-                              isInvalid={!!errors.accountName}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -217,18 +218,18 @@ const Seller = () => {
 
                       <div className="space-y-1">
                         <Controller
-                          name="accountNumber"
                           control={control}
+                          name="accountNumber"
                           render={({ field }) => (
                             <Input
                               {...field}
+                              isInvalid={!!errors.accountNumber}
                               label="Nomor Rekening"
-                              variant="bordered"
                               placeholder="Masukkan nomor rekening"
                               startContent={
                                 <BsCreditCard className="h-4 w-4 text-gray-400" />
                               }
-                              isInvalid={!!errors.accountNumber}
+                              variant="bordered"
                             />
                           )}
                         />
@@ -241,28 +242,28 @@ const Seller = () => {
                     </div>
                   </div>
                   <Alert
-                    title="Informasi Lapak"
-                    description={`Catatan: Setelah mendaftar sebagai penjual, data Anda akan diverifikasi dalam 1-3 hari kerja.`}
                     color="warning"
+                    description={`Catatan: Setelah mendaftar sebagai penjual, data Anda akan diverifikasi dalam 1-3 hari kerja.`}
+                    title="Informasi Lapak"
                   />
                 </div>
 
                 {/* Action Buttons */}
                 <div className="flex gap-4 pt-6">
                   <Button
+                    className="flex-1"
                     type="button"
                     variant="bordered"
-                    className="flex-1"
                     onPress={() => router.back()}
                   >
                     Batal
                   </Button>
                   <Button
-                    type="submit"
-                    color="success"
                     className="flex-1 text-white"
-                    isLoading={isPendingCreateSeller}
+                    color="success"
                     disabled={isPendingCreateSeller}
+                    isLoading={isPendingCreateSeller}
+                    type="submit"
                   >
                     {dataUser?.Seller?.length > 0
                       ? "Simpan Perubahan"

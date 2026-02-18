@@ -1,14 +1,16 @@
 "use client";
 
-import DataTable from "@/components/data-table";
 import { Button, Tooltip } from "@heroui/react";
 import { Key, useCallback, useState } from "react";
 import { FiEdit, FiTrash } from "react-icons/fi";
-import { columns } from "./columns";
 import { useRouter } from "next/navigation";
-import useUnit from "@/hooks/useUnit";
 import { useDisclosure } from "@heroui/react";
+
+import { columns } from "./columns";
 import ModalDelete from "./modal-delete";
+
+import useUnit from "@/hooks/useUnit";
+import DataTable from "@/components/data-table";
 
 const Unit = () => {
   const [selectedUnit, setSelectedUnit] = useState("");
@@ -28,9 +30,9 @@ const Unit = () => {
               <Tooltip color="primary" content="Ubah unit">
                 <Button
                   isIconOnly
-                  variant="light"
-                  color="primary"
                   className="text-lg cursor-pointer active:opacity-50"
+                  color="primary"
+                  variant="light"
                   onPress={() =>
                     router.push(`/admin/dashboard/unit/edit/${unit?.id}`)
                   }
@@ -41,9 +43,9 @@ const Unit = () => {
               <Tooltip color="danger" content="Hapus unit">
                 <Button
                   isIconOnly
-                  variant="light"
-                  color="danger"
                   className="text-lg cursor-pointer active:opacity-50"
+                  color="danger"
+                  variant="light"
                   onPress={() => {
                     setSelectedUnit(unit.id as string);
                     onOpen();
@@ -58,31 +60,31 @@ const Unit = () => {
           return cellValue;
       }
     },
-    []
+    [],
   );
 
   return (
     <>
       <ModalDelete
         isOpen={isOpen}
-        onClose={onClose}
-        onOpenChange={onOpen}
         selectedUnit={selectedUnit}
         setSelectedUnit={setSelectedUnit}
+        onClose={onClose}
+        onOpenChange={onOpen}
       />
 
       <DataTable
-        title="Unit"
-        description="Kelola unit"
-        columns={columns}
-        data={dataUnits?.data || []}
-        renderCell={renderCell as any}
         addButton
         addButtonText="Tambah Unit"
-        onPressAddButton={() => router.push("/admin/dashboard/unit/create")}
+        columns={columns}
+        data={dataUnits?.data || []}
+        description="Kelola unit"
         emptyContent="Belum ada unit yang ditambahkan"
         isLoading={isLoadingUnits}
         isPaginate={false}
+        renderCell={renderCell as any}
+        title="Unit"
+        onPressAddButton={() => router.push("/admin/dashboard/unit/create")}
       />
     </>
   );

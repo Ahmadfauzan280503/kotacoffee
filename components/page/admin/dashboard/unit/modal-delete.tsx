@@ -1,4 +1,3 @@
-import useUnit from "@/hooks/useUnit";
 import {
   Button,
   Modal,
@@ -8,6 +7,8 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import React, { useEffect } from "react";
+
+import useUnit from "@/hooks/useUnit";
 
 interface PropTypes {
   isOpen: boolean;
@@ -35,7 +36,7 @@ const ModalDelete = ({
   }, [isSuccessDeleteUnit]);
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -50,11 +51,11 @@ const ModalDelete = ({
                 Batal
               </Button>
               <Button
-                color="success"
                 className="text-white"
-                onPress={() => handleDeleteUnit(selectedUnit)}
-                isLoading={isPendingDeleteUnit}
+                color="success"
                 disabled={isPendingDeleteUnit}
+                isLoading={isPendingDeleteUnit}
+                onPress={() => handleDeleteUnit(selectedUnit)}
               >
                 Hapus
               </Button>

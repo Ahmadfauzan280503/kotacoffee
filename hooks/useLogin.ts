@@ -1,5 +1,3 @@
-import { loginSchema } from "@/schemas/login.schema";
-import { TLogin } from "@/types/auth";
 import { addToast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
@@ -7,6 +5,9 @@ import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { TLogin } from "@/types/auth";
+import { loginSchema } from "@/schemas/login.schema";
 
 const useLogin = () => {
   const [isVisiblePassword, setIsVisiblePassword] = useState(false);
@@ -32,6 +33,7 @@ const useLogin = () => {
       redirect: false,
       callbackUrl,
     });
+
     if (result?.error && result.status === 401) {
       throw new Error("Login gagal");
     }

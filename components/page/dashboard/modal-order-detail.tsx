@@ -1,6 +1,3 @@
-import useOrder from "@/hooks/useOrder";
-import { OrderResponse } from "@/types/order";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import {
   Button,
   Card,
@@ -18,6 +15,10 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiBox, FiCheck, FiClock, FiCreditCard, FiTruck } from "react-icons/fi";
 
+import { rupiahFormat } from "@/utils/rupiahFormat";
+import { OrderResponse } from "@/types/order";
+import useOrder from "@/hooks/useOrder";
+
 const ModalOrderDetail = ({
   isOpen,
   onClose,
@@ -28,7 +29,7 @@ const ModalOrderDetail = ({
   isOpen: boolean;
   onClose: () => void;
   order: OrderResponse;
-  type: "user" | "seller";
+  type: "user" | "seller" | "admin";
   isLoading: boolean;
 }) => {
   const {
@@ -43,25 +44,24 @@ const ModalOrderDetail = ({
   if (isLoading)
     return (
       <div className="flex items-center justify-center h-screen z-50 fixed inset-0 bg-foreground-500/15 backdrop-blur-sm">
-        <Spinner size="lg" color="success" />
+        <Spinner color="success" size="lg" />
       </div>
     );
 
   return (
     <Modal
+      backdrop="blur"
       isOpen={isOpen}
+      scrollBehavior="outside"
       size="2xl"
       onClose={onClose}
-      scrollBehavior="outside"
-      backdrop="blur"
     >
       <ModalContent>
         {(onClose) => (
           <>
             <ModalHeader className="flex items-center justify-between gap-1 border-b border-b-foreground-300 pr-10">
-              <p>Detail Pesanan #{order?.orderId}</p>
+              <p>Detail Pesanan #{order?.id?.slice(0, 8)}</p>
               <Chip
-                variant="shadow"
                 color={
                   order?.status === "PENDING"
                     ? "warning"
@@ -71,12 +71,13 @@ const ModalOrderDetail = ({
                         ? "danger"
                         : order?.status === "PROCESSING"
                           ? "secondary"
-                          : order?.status === "DELIVERED"
-                            ? "primary"
-                            : order?.status === "COMPLETED"
-                              ? "default"
+                          : order?.status === "COMPLETED"
+                            ? "success"
+                            : order?.status === "CANCELLED"
+                              ? "danger"
                               : "danger"
                 }
+                variant="shadow"
               >
                 {order?.status === "PENDING" && "Pending"}
                 {order?.status === "PAID" && "Dibayar"}
@@ -84,6 +85,7 @@ const ModalOrderDetail = ({
                 {order?.status === "PROCESSING" && "Diproses"}
                 {order?.status === "DELIVERED" && "Dikirim"}
                 {order?.status === "COMPLETED" && "Diterima"}
+                {order?.status === "CANCELLED" && "Dibatalkan"}
               </Chip>
             </ModalHeader>
             <ModalBody>
@@ -95,17 +97,21 @@ const ModalOrderDetail = ({
                     <tr>
                       <td className="font-semibold">Nama</td>
                       <td>:</td>
-                      <td>{order?.user?.name}</td>
+                      <td>{order?.user?.name || "N/A"}</td>
                     </tr>
                     <tr>
                       <td className="font-semibold">Email</td>
                       <td>:</td>
-                      <td>{order?.user?.email}</td>
+                      <td>{order?.user?.email || "N/A"}</td>
                     </tr>
                     <tr>
                       <td className="font-semibold">Phone</td>
                       <td>:</td>
-                      <td>{order?.user?.phone}</td>
+                      <td>
+                        {order?.user?.phone ||
+                          (order?.user as any)?.phoneNumber ||
+                          "N/A"}
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -115,31 +121,50 @@ const ModalOrderDetail = ({
                 {/* Product item */}
                 <div className="flex items-center justify-between">
                   <h2 className="my-3 font-semibold">Produk yang Dipesan</h2>
-                  {order.status === "PENDING" && type === "user" ? (
+                  {order?.status === "PENDING" && type === "user" ? (
                     <Button
+                      as={Link}
                       color="primary"
+                      href={`${order?.paymentUrl}`}
                       size="sm"
                       startContent={<FiCreditCard />}
-                      as={Link}
                       target="_blank"
-                      href={`${order?.paymentUrl}`}
                     >
                       Bayar
                     </Button>
                   ) : null}
                 </div>
                 {order?.items?.map((item) => (
-                  <Card shadow="sm" radius="sm" key={item.id} className="mb-2">
+                  <Card key={item.id} className="mb-2" radius="sm" shadow="sm">
                     <CardBody>
                       <div className="flex justify-between items-center">
                         <div className="flex gap-3">
-                          <Image
-                            src={item.product.imageUrl}
-                            alt={item.product.name}
-                            width={80}
-                            height={80}
-                            className="aspect-square object-cover rounded-sm"
-                          />
+                          {item.product.imageUrl ||
+                          (item.product as any).image_url ? (
+                            <Image
+                              alt={item.product.name}
+                              className="aspect-square object-cover rounded-sm"
+                              height={80}
+                              src={(() => {
+                                const url = (item.product.imageUrl ||
+                                  (item.product as any).image_url) as string;
+
+                                return url.startsWith("http") ||
+                                  url.startsWith("/")
+                                  ? url
+                                  : `/images/${url}`;
+                              })()}
+                              unoptimized={(
+                                item.product.imageUrl ||
+                                (item.product as any).image_url
+                              )?.includes?.("supabase.co")}
+                              width={80}
+                            />
+                          ) : (
+                            <div className="w-[80px] h-[80px] bg-gray-200 rounded-sm flex items-center justify-center text-xs text-gray-500">
+                              No Image
+                            </div>
+                          )}
                           <div>
                             <p className="font-semibold">{item.product.name}</p>
                             <p className="text-sm text-foreground-500">
@@ -164,84 +189,90 @@ const ModalOrderDetail = ({
               <div className="flex justify-between">
                 <p className="font-semibold">Ongkir</p>
                 <p className="font-semibold">
-                  {rupiahFormat(order?.shippingFee)}
+                  {rupiahFormat(
+                    Number(
+                      order?.shippingFee || (order as any)?.shipping_fee || 0,
+                    ),
+                  )}
                 </p>
               </div>
               <div className="flex justify-between">
                 <p className="font-semibold">Total Harga</p>
                 <p className="font-semibold">
-                  {rupiahFormat(order?.totalPrice)}
+                  {rupiahFormat(
+                    Number(order?.totalPrice || order?.total_amount || 0),
+                  )}
                 </p>
               </div>
 
               {/* Button Action */}
-              {type === "seller" ? (
+              {type === "seller" || type === "admin" ? (
                 <div>
                   <h2 className="my-3 font-semibold">Update Status</h2>
                   <div className="flex items-center gap-2">
                     <Button
-                      variant="bordered"
-                      size="sm"
                       color={
                         order?.status === "PENDING" ? "warning" : "default"
                       }
+                      size="sm"
                       startContent={<FiClock />}
+                      variant="bordered"
                     >
                       Pending
                     </Button>
                     <Button
-                      variant="bordered"
-                      size="sm"
                       color={order?.status === "PAID" ? "success" : "default"}
+                      size="sm"
                       startContent={<FiCreditCard />}
+                      variant="bordered"
                     >
                       Paid
                     </Button>
                     <Button
-                      disabled={order?.status === "PENDING"}
-                      onPress={() => {
-                        mutateIsProcessing(order?.id);
-                      }}
-                      variant="bordered"
-                      size="sm"
                       color={
                         order?.status === "PROCESSING" ? "secondary" : "default"
                       }
-                      startContent={!isPendingIsProcessing ? <FiBox /> : null}
-                      isLoading={isPendingIsProcessing}
+                      disabled={order?.status === "PENDING"}
                       isDisabled={isPendingIsProcessing}
+                      isLoading={isPendingIsProcessing}
+                      size="sm"
+                      startContent={!isPendingIsProcessing ? <FiBox /> : null}
+                      variant="bordered"
+                      onPress={() => {
+                        mutateIsProcessing(order?.id);
+                      }}
                     >
                       Diproses
                     </Button>
                     <Button
-                      disabled={order?.status === "PENDING"}
-                      onPress={() => {
-                        mutateIsDelivered(order?.id);
-                      }}
-                      variant="bordered"
-                      size="sm"
                       color={
                         order?.status === "DELIVERED" ? "primary" : "default"
                       }
-                      startContent={!isPendingIsDelivered ? <FiTruck /> : null}
-                      isLoading={isPendingIsDelivered}
+                      disabled={order?.status === "PENDING"}
                       isDisabled={isPendingIsDelivered}
+                      isLoading={isPendingIsDelivered}
+                      size="sm"
+                      startContent={!isPendingIsDelivered ? <FiTruck /> : null}
+                      variant="bordered"
+                      onPress={() => {
+                        mutateIsDelivered(order?.id);
+                      }}
                     >
                       Dikirim
                     </Button>
                     <Button
-                      disabled={order?.status === "PENDING"}
-                      onPress={() => {
-                        mutateIsCompleted(order?.id);
-                      }}
-                      variant="bordered"
-                      size="sm"
                       color={
                         order?.status === "COMPLETED" ? "success" : "default"
                       }
-                      startContent={!isPendingIsCompleted ? <FiCheck /> : null}
-                      isLoading={isPendingIsCompleted}
+                      disabled={order?.status === "PENDING"}
                       isDisabled={isPendingIsCompleted}
+                      isLoading={isPendingIsCompleted}
+                      size="sm"
+                      startContent={!isPendingIsCompleted ? <FiCheck /> : null}
+                      variant="bordered"
+                      onPress={() => {
+                        mutateIsCompleted(order?.id);
+                      }}
                     >
                       Diterima
                     </Button>

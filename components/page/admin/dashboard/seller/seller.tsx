@@ -1,18 +1,20 @@
 "use client";
 
-import DataTable from "@/components/data-table";
-import useSeller from "@/hooks/useSeller";
 import { Avatar } from "@heroui/avatar";
 import { Button, Chip, Tooltip, useDisclosure } from "@heroui/react";
 import { Key, useCallback, useEffect, useState } from "react";
 import { FiEye, FiTrash } from "react-icons/fi";
-import { columns } from "./columns";
 import { useRouter } from "next/navigation";
 import { FaTimes } from "react-icons/fa";
 import { MdVerified } from "react-icons/md";
-import { formatDate } from "@/utils/dateFormat";
+
+import { columns } from "./columns";
 import ModalSeller from "./modal-seller";
 import ModalDelete from "./modal-delete";
+
+import { formatDate } from "@/utils/dateFormat";
+import useSeller from "@/hooks/useSeller";
+import DataTable from "@/components/data-table";
 import useChangeUrl from "@/hooks/useChangeUrl";
 
 const Seller = () => {
@@ -45,6 +47,7 @@ const Seller = () => {
             <div className="flex items-center gap-2">
               <div>
                 <Avatar
+                  showFallback
                   className="w-10 h-10 mx-auto border-4 border-emerald-200"
                   name={`${seller?.user?.name}`}
                   src={
@@ -52,7 +55,6 @@ const Seller = () => {
                       ? seller?.user?.photo
                       : `https://ui-avatars.com/api/?name=${seller?.user?.name}&background=random`
                   }
-                  showFallback
                 />
               </div>
               <div className="flex flex-col items-start">
@@ -68,10 +70,9 @@ const Seller = () => {
         case "verified":
           return (
             <Chip
-              size="sm"
-              color={cellValue ? "primary" : "default"}
-              variant="bordered"
               className="flex items-center gap-1"
+              color={cellValue ? "primary" : "default"}
+              size="sm"
               startContent={
                 cellValue ? (
                   <MdVerified className="h-4 w-4" />
@@ -79,6 +80,7 @@ const Seller = () => {
                   <FaTimes className="h-4 w-4" />
                 )
               }
+              variant="bordered"
             >
               {cellValue ? "Verified" : "Not Verified"}
             </Chip>
@@ -100,10 +102,10 @@ const Seller = () => {
               <Tooltip color="primary" content="Detail Penjual">
                 <Button
                   isIconOnly
+                  className="cursor-pointer active:opacity-50"
+                  color="primary"
                   size="sm"
                   variant="light"
-                  color="primary"
-                  className="cursor-pointer active:opacity-50"
                   onPress={() => {
                     setSellerId(seller?.id);
                     onOpen();
@@ -115,10 +117,10 @@ const Seller = () => {
               <Tooltip color="danger" content="Hapus Penjual">
                 <Button
                   isIconOnly
+                  className="cursor-pointer active:opacity-50"
+                  color="danger"
                   size="sm"
                   variant="light"
-                  color="danger"
-                  className="cursor-pointer active:opacity-50"
                   onPress={() => {
                     onOpenDelete();
                     setSelectedSeller(seller?.id);
@@ -133,7 +135,7 @@ const Seller = () => {
           return cellValue;
       }
     },
-    []
+    [],
   );
 
   const handleOnClose = () => {
@@ -145,26 +147,26 @@ const Seller = () => {
     <>
       <ModalSeller
         isOpen={isOpen}
-        onClose={handleOnClose}
         seller={dataSellerById?.data}
+        onClose={handleOnClose}
       />
       <ModalDelete
         isOpen={isOpenDelete}
-        onClose={onCloseDelete}
-        onOpenChange={onOpenDelete}
         selectedSeller={selectedSeller as string}
         setSelectedSeller={setSelectedSeller}
+        onClose={onCloseDelete}
+        onOpenChange={onOpenDelete}
       />
 
       <DataTable
-        title="Penjual"
-        description="Kelola penjual"
         columns={columns}
         data={dataAllSeller?.data?.sellers || []}
-        renderCell={renderCell as any}
-        onPressAddButton={() => router.push("/admin/dashboard/seller/create")}
+        description="Kelola penjual"
         emptyContent="Belum ada penjual yang ditambahkan"
         isLoading={isLoadingAllSeller}
+        renderCell={renderCell as any}
+        title="Penjual"
+        onPressAddButton={() => router.push("/admin/dashboard/seller/create")}
       />
     </>
   );

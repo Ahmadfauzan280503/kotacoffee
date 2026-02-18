@@ -20,9 +20,9 @@ const PageHeader = ({
         <div className="flex items-center gap-4">
           <Button
             isIconOnly
+            className="shrink-0"
             variant="bordered"
             onPress={() => router.push("/")}
-            className="shrink-0"
           >
             <FiArrowLeft className="h-4 w-4" />
           </Button>

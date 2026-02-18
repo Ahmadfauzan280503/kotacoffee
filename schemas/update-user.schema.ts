@@ -16,12 +16,14 @@ export const updateUserSchema = z.object({
         const today = new Date();
         let age = today.getFullYear() - date.getFullYear();
         const m = today.getMonth() - date.getMonth();
+
         if (m < 0 || (m === 0 && today.getDate() < date.getDate())) {
           age--;
         }
+
         return age >= 17;
       },
-      { message: "Umur minimal 17 tahun" }
+      { message: "Umur minimal 17 tahun" },
     ),
   photo: z.string().optional(),
   email: z.string().email("Email tidak valid"),

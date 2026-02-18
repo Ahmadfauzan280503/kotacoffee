@@ -1,5 +1,6 @@
 import "@/styles/globals.css";
 import { Metadata, Viewport } from "next";
+import Script from "next/script";
 import clsx from "clsx";
 
 import { Providers } from "./providers";
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
   },
   description: siteConfig.description,
   icons: {
-    icon: "/images/logo-sayur.png",
+    icon: "/images/logo-kotacoffee.png",
   },
 };
 
@@ -35,12 +36,12 @@ export default async function RootLayout({
   const session = await getSession();
 
   return (
-    <html suppressHydrationWarning lang="en">
+    <html suppressHydrationWarning lang="id">
       <head />
       <body
         className={clsx(
           "text-foreground bg-background font-sans antialiased",
-          fontSans.variable
+          fontSans.variable,
         )}
       >
         <Providers
@@ -51,6 +52,11 @@ export default async function RootLayout({
             <LayoutWrapper>{children}</LayoutWrapper>
           </div>
         </Providers>
+        <Script
+          data-client-key={process.env.NEXT_PUBLIC_MIDTRANS_CLIENT_KEY}
+          src="https://app.sandbox.midtrans.com/snap/snap.js"
+          strategy="lazyOnload"
+        />
       </body>
     </html>
   );

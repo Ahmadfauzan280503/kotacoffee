@@ -1,10 +1,5 @@
 "use client";
 
-import useProfile from "@/hooks/useProfile";
-import {
-  calendarDateToString,
-  stringToCalendarDate,
-} from "@/utils/stringToCalendarDate";
 import { Button } from "@heroui/button";
 import {
   Card,
@@ -24,6 +19,12 @@ import { FaGenderless, FaUser, FaUserLock } from "react-icons/fa";
 import { FiCalendar, FiMail, FiPhone } from "react-icons/fi";
 import { I18nProvider } from "@react-aria/i18n";
 import { MdLocationPin } from "react-icons/md";
+
+import {
+  calendarDateToString,
+  stringToCalendarDate,
+} from "@/utils/stringToCalendarDate";
+import useProfile from "@/hooks/useProfile";
 
 const ProfileForm = () => {
   const router = useRouter();
@@ -68,7 +69,7 @@ const ProfileForm = () => {
         </CardHeader>
 
         <CardBody>
-          <form onSubmit={handleSubmit(handleUpdateUser)} className="space-y-8">
+          <form className="space-y-8" onSubmit={handleSubmit(handleUpdateUser)}>
             {/* Basic Information */}
             <div className="space-y-6">
               <div className="space-y-4">
@@ -78,20 +79,20 @@ const ProfileForm = () => {
                 <div className="grid grid-cols-1 gap-6">
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="name"
                       control={control}
+                      name="name"
                       render={({ field }) => (
                         <Input
                           {...field}
+                          isRequired
+                          errorMessage={errors.name?.message}
+                          isInvalid={!!errors.name}
                           label="Nama Lengkap"
                           placeholder="Masukkan nama lengkap"
-                          variant="bordered"
                           startContent={
                             <FaUser className="h-4 w-4 text-gray-400" />
                           }
-                          isRequired
-                          isInvalid={!!errors.name}
-                          errorMessage={errors.name?.message}
+                          variant="bordered"
                         />
                       )}
                     />
@@ -101,20 +102,20 @@ const ProfileForm = () => {
                 <div className="grid grid-cols-1 gap-6">
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="username"
                       control={control}
+                      name="username"
                       render={({ field }) => (
                         <Input
                           {...field}
+                          disabled
+                          isRequired
+                          errorMessage={errors.username?.message}
+                          isInvalid={!!errors.username}
                           label="Username"
                           placeholder="Masukkan username"
-                          disabled
                           startContent={
                             <FaUserLock className="h-4 w-4 text-gray-400" />
                           }
-                          isRequired
-                          isInvalid={!!errors.username}
-                          errorMessage={errors.username?.message}
                         />
                       )}
                     />
@@ -124,19 +125,19 @@ const ProfileForm = () => {
                 <div className="grid grid-cols-1 gap-6">
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="gender"
                       control={control}
+                      name="gender"
                       render={({ field }) => (
                         <Select
                           {...field}
+                          errorMessage={errors.gender?.message}
+                          isInvalid={!!errors.gender}
                           label="Jenis Kelamin"
-                          variant="bordered"
+                          selectedKeys={field.value ? [field.value] : []}
                           startContent={
                             <FaGenderless className="h-4 w-4 text-gray-400" />
                           }
-                          selectedKeys={field.value ? [field.value] : []}
-                          isInvalid={!!errors.gender}
-                          errorMessage={errors.gender?.message}
+                          variant="bordered"
                         >
                           <SelectItem key="male">Laki-laki</SelectItem>
                           <SelectItem key="female">Perempuan</SelectItem>
@@ -149,21 +150,21 @@ const ProfileForm = () => {
                 <div className="grid grid-cols-1 gap-6">
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="birthDate"
                       control={control}
+                      name="birthDate"
                       render={({ field }) => (
                         <I18nProvider locale="id">
                           <DatePicker
                             {...field}
-                            startContent={<FiCalendar />}
+                            errorMessage={errors.birthDate?.message}
+                            isInvalid={!!errors.birthDate}
                             label="Tanggal Lahir"
-                            variant="bordered"
+                            startContent={<FiCalendar />}
                             value={stringToCalendarDate(field.value)}
+                            variant="bordered"
                             onChange={(val) =>
                               field.onChange(calendarDateToString(val))
                             }
-                            isInvalid={!!errors.birthDate}
-                            errorMessage={errors.birthDate?.message}
                           />
                         </I18nProvider>
                       )}
@@ -180,20 +181,20 @@ const ProfileForm = () => {
                 <div className="space-y-4">
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="email"
                       control={control}
+                      name="email"
                       render={({ field }) => (
                         <Input
                           {...field}
+                          disabled
+                          isRequired
+                          errorMessage={errors.email?.message}
+                          isInvalid={!!errors.email}
                           label="Alamat Email"
                           placeholder="Masukkan alamat email"
-                          disabled
                           startContent={
                             <FiMail className="h-4 w-4 text-gray-400" />
                           }
-                          isRequired
-                          isInvalid={!!errors.email}
-                          errorMessage={errors.email?.message}
                         />
                       )}
                     />
@@ -201,19 +202,19 @@ const ProfileForm = () => {
 
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="phone"
                       control={control}
+                      name="phone"
                       render={({ field }) => (
                         <Input
                           {...field}
+                          errorMessage={errors.phone?.message}
+                          isInvalid={!!errors.phone}
                           label="Nomor Telepon"
                           placeholder="8123456789"
-                          variant="bordered"
                           startContent={
                             <FiPhone className="h-4 w-4 text-gray-400" />
                           }
-                          isInvalid={!!errors.phone}
-                          errorMessage={errors.phone?.message}
+                          variant="bordered"
                           onChange={(e) => {
                             let val = e.target.value;
 
@@ -231,20 +232,20 @@ const ProfileForm = () => {
 
                   <Skeleton className="rounded-lg" isLoaded={!!dataUser}>
                     <Controller
-                      name="address"
                       control={control}
+                      name="address"
                       render={({ field }) => (
                         <Textarea
                           {...field}
+                          errorMessage={errors.address?.message}
+                          isInvalid={!!errors.address}
                           label="Alamat Lengkap"
-                          placeholder="Masukkan alamat lengkap"
                           minRows={3}
-                          variant="bordered"
+                          placeholder="Masukkan alamat lengkap"
                           startContent={
                             <MdLocationPin className="h-4 w-4 text-gray-400" />
                           }
-                          isInvalid={!!errors.address}
-                          errorMessage={errors.address?.message}
+                          variant="bordered"
                         />
                       )}
                     />
@@ -256,19 +257,19 @@ const ProfileForm = () => {
             {/* Action Buttons */}
             <div className="flex gap-4 pt-6">
               <Button
+                className="flex-1"
                 type="button"
                 variant="bordered"
-                className="flex-1"
                 onPress={() => router.back()}
               >
                 Batal
               </Button>
               <Button
-                type="submit"
-                color="success"
                 className="flex-1 text-white"
-                isLoading={isPendingUpdateUser}
+                color="success"
                 disabled={isPendingUpdateUser}
+                isLoading={isPendingUpdateUser}
+                type="submit"
               >
                 Simpan Perubahan
               </Button>

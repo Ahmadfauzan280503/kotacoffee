@@ -23,16 +23,17 @@ const ButtonWhatsapp = ({
 }: PropTypes) => {
   const handleClick = () => {
     const url = `https://wa.me/${phone}?text=${encodeURIComponent(message)}`;
+
     window.open(url, "_blank");
   };
 
   return (
     <Button
-      variant={variant}
-      size={size}
-      color="success"
       className="text-white"
+      color="success"
+      size={size}
       startContent={<MdWhatsapp />}
+      variant={variant}
       onPress={handleClick}
     >
       WhatsApp

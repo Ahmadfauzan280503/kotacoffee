@@ -16,7 +16,7 @@ const ModalConfirmBeseller = ({
   onOpenChange: (open: boolean) => void;
 }) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement="center">
+    <Modal isOpen={isOpen} placement="center" onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -27,16 +27,16 @@ const ModalConfirmBeseller = ({
                     Mulai Jual Sekarang!
                   </h2>
                   <p className="text-center text-gray-500 dark:text-gray-400">
-                    Nikmati keuntungan sebagai penjual
+                    Nikmati keuntungan sebagai Admin
                   </p>
                 </div>
                 <div className="bg-emerald-50 p-4 rounded-lg border border-emerald-200 dark:bg-emerald-800 dark:border-emerald-700">
                   <h4 className="font-semibold text-emerald-800 mb-2 dark:text-emerald-100">
-                    Keuntungan menjadi penjual:
+                    Keuntungan menjadi Admin:
                   </h4>
                   <ul className="text-sm text-emerald-700 space-y-1 dark:text-emerald-100">
-                    <li>• Dapat menjual produk sayuran segar</li>
-                    <li>• Akses ke dashboard penjual</li>
+                    <li>• Dapat menjual Berbagai Minuman Coffee</li>
+                    <li>• Akses ke dashboard Admin</li>
                     <li>• Kelola pesanan dan inventori</li>
                     <li>• Dapatkan penghasilan tambahan</li>
                   </ul>
@@ -55,11 +55,11 @@ const ModalConfirmBeseller = ({
                 Tidak
               </Button>
               <Button
-                color="success"
-                className="text-white dark:text-white"
-                onPress={onClose}
                 as={Link}
+                className="text-white dark:text-white"
+                color="success"
                 href="/seller"
+                onPress={onClose}
               >
                 Ya, Menjadi Penjual
               </Button>

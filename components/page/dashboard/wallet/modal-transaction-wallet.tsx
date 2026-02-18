@@ -1,6 +1,5 @@
 "use client";
 
-import useWalletTransaction from "@/hooks/useWalletTransaction";
 import {
   Button,
   Input,
@@ -12,6 +11,8 @@ import {
 } from "@heroui/react";
 import { useEffect } from "react";
 import { Controller } from "react-hook-form";
+
+import useWalletTransaction from "@/hooks/useWalletTransaction";
 
 const ModalTransactionWallet = ({
   isOpen,
@@ -48,16 +49,16 @@ const ModalTransactionWallet = ({
                 <div className="flex flex-col gap-4">
                   <div className="flex flex-col gap-1">
                     <Controller
-                      name="amount"
                       control={control}
+                      name="amount"
                       render={({ field }) => (
                         <Input
                           {...field}
-                          label="Jumlah Penarikan"
-                          variant="bordered"
-                          type="number"
-                          isInvalid={!!errors.amount}
                           errorMessage={errors.amount?.message}
+                          isInvalid={!!errors.amount}
+                          label="Jumlah Penarikan"
+                          type="number"
+                          variant="bordered"
                         />
                       )}
                     />
@@ -69,10 +70,10 @@ const ModalTransactionWallet = ({
                   Close
                 </Button>
                 <Button
-                  type="submit"
-                  color="success"
                   className="text-white"
+                  color="success"
                   isLoading={isCreating}
+                  type="submit"
                 >
                   Tarik Dana
                 </Button>

@@ -1,9 +1,5 @@
 "use client";
 
-import ButtonWhatsapp from "@/components/button-whatsapp";
-import useSeller from "@/hooks/useSeller";
-import { TSeller } from "@/types/seller";
-import { formatDate } from "@/utils/dateFormat";
 import {
   Button,
   Card,
@@ -19,6 +15,11 @@ import {
 import { FaCreditCard, FaStore } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { MdVerified } from "react-icons/md";
+
+import ButtonWhatsapp from "@/components/button-whatsapp";
+import useSeller from "@/hooks/useSeller";
+import { TSeller } from "@/types/seller";
+import { formatDate } from "@/utils/dateFormat";
 
 const ModalSeller = ({
   isOpen,
@@ -52,8 +53,8 @@ const ModalSeller = ({
     children: React.ReactNode;
   }) => (
     <Card
-      shadow="sm"
       className="border border-gray-200 dark:border-gray-700 rounded-xl"
+      shadow="sm"
     >
       <CardBody className="p-4 space-y-4">
         <div className="flex items-center gap-3">
@@ -70,11 +71,11 @@ const ModalSeller = ({
 
   return (
     <Modal
+      backdrop="blur"
       isOpen={isOpen}
+      scrollBehavior="outside"
       size="2xl"
       onClose={onClose}
-      scrollBehavior="outside"
-      backdrop="blur"
     >
       <ModalContent>
         {(onClose) => (
@@ -106,7 +107,7 @@ const ModalSeller = ({
                   value={
                     seller?.user?.birthDate &&
                     formatDate(
-                      seller?.user?.birthDate?.split("T")[0] as string
+                      seller?.user?.birthDate?.split("T")[0] as string,
                     ).split(",")[0]
                   }
                 />
@@ -143,36 +144,36 @@ const ModalSeller = ({
                 <div className="flex flex-wrap items-center gap-2">
                   {seller?.verified ? (
                     <Chip
-                      size="sm"
-                      color="primary"
-                      variant="bordered"
                       className="flex items-center gap-1"
+                      color="primary"
+                      size="sm"
                       startContent={<MdVerified className="h-4 w-4" />}
+                      variant="bordered"
                     >
                       Verified
                     </Chip>
                   ) : (
                     <div className="flex w-full gap-2">
                       <Button
-                        variant="shadow"
-                        size="sm"
                         color="primary"
+                        disabled={isPendingUpdateVerified}
+                        isLoading={isPendingUpdateVerified}
+                        size="sm"
                         startContent={
                           !isPendingUpdateVerified ? <MdVerified /> : null
                         }
+                        variant="shadow"
                         onPress={() =>
                           mutateUpdateVerified(seller?.id as string)
                         }
-                        disabled={isPendingUpdateVerified}
-                        isLoading={isPendingUpdateVerified}
                       >
                         Verifikasi
                       </Button>
 
                       <ButtonWhatsapp
-                        variant="shadow"
-                        phone={seller?.user?.phone as string}
                         message={`Hallo, ${seller?.user?.name}. Mohon maaf lapak Anda belum bisa kami verifikasi karena data yang Anda berikan tidak valid. Silahkan periksa kembali data yang Anda berikan.`}
+                        phone={seller?.user?.phone as string}
+                        variant="shadow"
                       />
                     </div>
                   )}

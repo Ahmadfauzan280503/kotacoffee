@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 
 export default {
   getUsers: async (params: string, token: string) =>

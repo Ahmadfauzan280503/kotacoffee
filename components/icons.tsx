@@ -1,7 +1,7 @@
 import * as React from "react";
+import Image from "next/image";
 
 import { IconSvgProps } from "@/types";
-import Image from "next/image";
 
 export const Logo = ({
   width = 50,
@@ -12,10 +12,11 @@ export const Logo = ({
 }) => {
   return (
     <Image
-      src="/images/logo-sayur.png"
       alt="logo"
-      width={width}
+      className="object-contain"
       height={height}
+      src="/images/logo-kotacoffee.png"
+      width={width}
     />
   );
 };

@@ -22,6 +22,7 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "next-auth/react";
+
 import AdminDashboardNavbar from "@/components/page/admin/dashboard/admin-dashboard-navbar";
 import useProfile from "@/hooks/useProfile";
 
@@ -44,20 +45,21 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
           <div className="flex items-center justify-between h-16 px-6">
             <Link className="flex justify-start items-center gap-2" href="/">
               <Image
-                src="/images/logo-sayur.png"
                 alt="logo"
-                width={40}
+                className="object-contain"
                 height={40}
+                src="/images/logo-kotacoffee.png"
+                width={40}
               />
               <div>
-                <p className="font-bold text-inherit">SayurSegar</p>
-                <p className="text-xs text-default-500">Langsung dari petani</p>
+                <p className="font-bold text-inherit">Kotacoffee.id</p>
+                <p className="text-xs text-default-500">Kopi Trotoar</p>
               </div>
             </Link>
             <Button
               isIconOnly
-              variant="light"
               className="lg:hidden text-white"
+              variant="light"
               onPress={() => setIsSidebarOpen(!isSidebarOpen)}
             >
               <HiOutlineX className="w-5 h-5" />
@@ -72,26 +74,26 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <Dropdown placement="top-start">
               <DropdownTrigger>
                 <Button
-                  variant="light"
                   className="w-full justify-start h-auto p-3"
+                  variant="light"
                 >
                   <div className="flex items-center w-full">
                     <Avatar
-                      size="sm"
-                      name="Admin"
                       className="bg-green-600 text-white"
+                      name="Admin"
+                      size="sm"
                       src={
                         dataUser?.photo
                           ? dataUser?.photo
-                          : `https://ui-avatars.com/api/?name=${session?.user.name}&background=random`
+                          : `https://ui-avatars.com/api/?name=${session?.user?.name}&background=random`
                       }
                     />
                     <div className="ml-3 text-left">
                       <p className="text-sm font-medium text-gray-700 dark:text-gray-200">
-                        {session?.user.name}
+                        {session?.user?.name}
                       </p>
                       <p className="text-xs text-gray-500 dark:text-gray-400">
-                        {session?.user.email}
+                        {session?.user?.email}
                       </p>
                     </div>
                   </div>
@@ -133,8 +135,8 @@ const AdminDashboardLayout = ({ children }: { children: React.ReactNode }) => {
             <div className="flex items-center justify-between h-16 px-4 sm:px-6">
               <Button
                 isIconOnly
-                variant="light"
                 className="lg:hidden"
+                variant="light"
                 onPress={() => setIsSidebarOpen(!isSidebarOpen)}
               >
                 <HiOutlineMenu className="w-5 h-5" />

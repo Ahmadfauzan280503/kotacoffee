@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 
 export default {
   getWalletTransactions: (token: string) =>
@@ -30,7 +31,7 @@ export default {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     ),
   deleteWalletTransaction: (id: string, token: string) =>
     instance.delete(`${endpoint.WALLET_TRANSACTION}/${id}`, {

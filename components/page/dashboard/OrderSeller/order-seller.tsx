@@ -1,10 +1,6 @@
 "use client";
 
-import DataTable from "@/components/data-table";
-import { columns } from "./columns";
-import useOrder from "@/hooks/useOrder";
 import { Key, useCallback, useEffect } from "react";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import { Button, Chip, useDisclosure } from "@heroui/react";
 import {
   FiBox,
@@ -16,8 +12,15 @@ import {
   FiTruck,
   FiX,
 } from "react-icons/fi";
-import { formatDate } from "@/utils/dateFormat";
+
 import ModalOrderDetail from "../modal-order-detail";
+
+import { columns } from "./columns";
+
+import DataTable from "@/components/data-table";
+import useOrder from "@/hooks/useOrder";
+import { rupiahFormat } from "@/utils/rupiahFormat";
+import { formatDate } from "@/utils/dateFormat";
 import useChangeUrl from "@/hooks/useChangeUrl";
 
 const OrderSeller = () => {
@@ -63,6 +66,22 @@ const OrderSeller = () => {
         case "status":
           return (
             <Chip
+              color={
+                cellValue === "PENDING"
+                  ? "warning"
+                  : cellValue === "PAID"
+                    ? "success"
+                    : cellValue === "FAILED"
+                      ? "danger"
+                      : cellValue == "PROCESSING"
+                        ? "secondary"
+                        : cellValue == "DELIVERED"
+                          ? "primary"
+                          : cellValue === "COMPLETED"
+                            ? "default"
+                            : "danger"
+              }
+              size="sm"
               startContent={
                 cellValue === "PENDING" ? (
                   <FiClock />
@@ -79,22 +98,6 @@ const OrderSeller = () => {
                 ) : null
               }
               variant="bordered"
-              size="sm"
-              color={
-                cellValue === "PENDING"
-                  ? "warning"
-                  : cellValue === "PAID"
-                    ? "success"
-                    : cellValue === "FAILED"
-                      ? "danger"
-                      : cellValue == "PROCESSING"
-                        ? "secondary"
-                        : cellValue == "DELIVERED"
-                          ? "primary"
-                          : cellValue === "COMPLETED"
-                            ? "default"
-                            : "danger"
-              }
             >
               {cellValue === "PENDING" && "Pending"}
               {cellValue === "PAID" && "Dibayar"}
@@ -111,8 +114,8 @@ const OrderSeller = () => {
             <div>
               <Button
                 isIconOnly
-                size="sm"
                 color="primary"
+                size="sm"
                 variant="light"
                 onPress={() => {
                   onOpen();
@@ -124,11 +127,11 @@ const OrderSeller = () => {
               {order?.status !== "PENDING" && order.status !== "COMPLETED" ? (
                 <Button
                   isIconOnly
-                  size="sm"
                   color="success"
-                  variant="light"
-                  isLoading={isPendingIsCompleted}
                   isDisabled={isPendingIsCompleted}
+                  isLoading={isPendingIsCompleted}
+                  size="sm"
+                  variant="light"
                   onPress={() => {
                     mutateIsCompleted(order?.id as string);
                   }}
@@ -142,7 +145,7 @@ const OrderSeller = () => {
           return cellValue;
       }
     },
-    []
+    [],
   );
 
   const handleOnClose = () => {
@@ -153,22 +156,22 @@ const OrderSeller = () => {
   return (
     <>
       <ModalOrderDetail
-        type="seller"
-        isOpen={isOpen}
-        onClose={handleOnClose}
-        order={dataOrderById?.data || {}}
         isLoading={isLoadingDataOrderById}
+        isOpen={isOpen}
+        order={dataOrderById?.data || {}}
+        type="seller"
+        onClose={handleOnClose}
       />
       <DataTable
         columns={columns}
-        data={dataOrderSeller?.data?.orders || []}
-        isLoading={isLoadingDataOrderSeller}
-        title="Kelola Pesanan"
-        description="Kelola pesanan lapak Anda"
-        renderCell={renderCell as any}
-        totalPage={dataOrderSeller?.data?.totalPage}
         currentPage={dataOrderSeller?.data?.currentPage}
+        data={dataOrderSeller?.data?.orders || []}
+        description="Kelola pesanan lapak Anda"
         emptyContent="Tidak ada pesanan"
+        isLoading={isLoadingDataOrderSeller}
+        renderCell={renderCell as any}
+        title="Kelola Pesanan"
+        totalPage={dataOrderSeller?.data?.totalPage}
       />
     </>
   );

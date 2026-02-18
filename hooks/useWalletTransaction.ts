@@ -1,12 +1,14 @@
-import { walletTransactionSchema } from "@/schemas/wallet-transaction.schema";
-import walletTransactionService from "@/services/wallet-transaction.service";
 import { addToast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
 import useChangeUrl from "./useChangeUrl";
+
+import walletTransactionService from "@/services/wallet-transaction.service";
+import { walletTransactionSchema } from "@/schemas/wallet-transaction.schema";
 
 const useWalletTransaction = () => {
   const [selectedId, setSelectedId] = useState<string | null>(null);
@@ -15,15 +17,18 @@ const useWalletTransaction = () => {
 
   // get all wallet transaction (superadmin)
   const getAllWalletTransactionsService = async () => {
-    let params = `search=${search}&page=${page}&limit=${limit}`;
-    if (!search && !page && !limit) {
-      params = "";
-    }
+    const queryParams = new URLSearchParams();
+
+    if (search) queryParams.set("search", search);
+    if (page) queryParams.set("page", String(page));
+    if (limit) queryParams.set("limit", String(limit));
+    const params = queryParams.toString();
 
     const res = await walletTransactionService.getAllWalletTransacions(
       session?.user.token as string,
-      params
+      params,
     );
+
     return res.data;
   };
 
@@ -33,13 +38,15 @@ const useWalletTransaction = () => {
   } = useQuery({
     queryKey: ["all-wallet-transactions", search, page, limit],
     queryFn: getAllWalletTransactionsService,
+    enabled: !!session?.user?.token,
   });
 
   // get wallet transaction
   const getWalletTransactionsService = async () => {
     const res = await walletTransactionService.getWalletTransactions(
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 
@@ -49,14 +56,16 @@ const useWalletTransaction = () => {
   } = useQuery({
     queryKey: ["wallet-transactions"],
     queryFn: getWalletTransactionsService,
+    enabled: !!session?.user?.token,
   });
 
   // get wallet transaction by id
   const getWalletTransactionByIdService = async () => {
     const res = await walletTransactionService.getWalletTransactionById(
       selectedId as string,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 
@@ -90,7 +99,7 @@ const useWalletTransaction = () => {
   }) => {
     const res = await walletTransactionService.createWalletTransaction(
       payload,
-      session?.user.token as string
+      session?.user.token as string,
     );
 
     return res.data;
@@ -133,8 +142,9 @@ const useWalletTransaction = () => {
   const deleteWalletTransactionService = async (id: string) => {
     const res = await walletTransactionService.deleteWalletTransaction(
       id,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 

@@ -1,5 +1,7 @@
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 import useDebounce from "./useDebounce";
+
 import { LIMIT_DEFAULT, PAGE_DEFAULT } from "@/constant/PAGINATION";
 
 const useChangeUrl = () => {
@@ -26,12 +28,14 @@ const useChangeUrl = () => {
 
   const handleChangePage = (page: number) => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("page", page.toString());
     router.push(`${pathname}?${params.toString()}`);
   };
 
   const handleChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("category", e.target.value);
     params.set("page", PAGE_DEFAULT.toString());
 
@@ -40,6 +44,7 @@ const useChangeUrl = () => {
 
   const handleSearchDebounced = debounce((value: string) => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("search", value);
     params.set("page", PAGE_DEFAULT.toString());
 
@@ -52,6 +57,7 @@ const useChangeUrl = () => {
 
   const handleClearSearch = () => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("search", "");
     params.set("page", PAGE_DEFAULT.toString());
 
@@ -60,6 +66,7 @@ const useChangeUrl = () => {
 
   const handleChangeLimit = (e: React.ChangeEvent<HTMLSelectElement>) => {
     const params = new URLSearchParams(searchParams.toString());
+
     params.set("limit", e.target.value);
     params.set("page", PAGE_DEFAULT.toString());
 

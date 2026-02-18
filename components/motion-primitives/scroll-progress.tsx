@@ -1,8 +1,9 @@
 "use client";
 
-import cn from "@/utils/cn";
-import { motion, SpringOptions, useScroll, useSpring } from "motion/react";
+import { motion, SpringOptions, useScroll, useSpring } from "framer-motion";
 import { RefObject } from "react";
+
+import cn from "@/utils/cn";
 
 export type ScrollProgressProps = {
   className?: string;

@@ -7,6 +7,7 @@ import { LuBox, LuWallet } from "react-icons/lu";
 import { MdCategory, MdOutlineDashboard } from "react-icons/md";
 import { TbWeight } from "react-icons/tb";
 import { HiBuildingStorefront, HiOutlineUsers } from "react-icons/hi2";
+import { HiShoppingCart } from "react-icons/hi";
 
 const menuItems = [
   {
@@ -40,6 +41,11 @@ const menuItems = [
     icon: LuBox,
   },
   {
+    name: "Kelola Pesanan",
+    href: "/admin/dashboard/order",
+    icon: HiShoppingCart,
+  },
+  {
     name: "Kelola Transaksi Wallet",
     href: "/admin/dashboard/wallet-transaction",
     icon: LuWallet,
@@ -55,18 +61,18 @@ const AdminDashboardNavbar = () => {
         {menuItems.map((item) => {
           const isActive = pathname === item.href;
           const IconComponent = item.icon;
+
           return (
             <Button
               key={item.name}
               as={Link}
-              href={item.href}
-              variant={isActive ? "flat" : "light"}
-              color={isActive ? "success" : "default"}
               className={`w-full justify-start h-12 ${
                 isActive
                   ? "bg-green-100 text-green-700 border-r-2 rounded-r-sm border-green-600 dark:border-emerald-600 dark:bg-emerald-900 dark:text-emerald-100"
                   : "text-gray-600 hover:bg-gray-100 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-gray-200"
               }`}
+              color={isActive ? "success" : "default"}
+              href={item.href}
               startContent={
                 <IconComponent
                   className={`w-5 h-5 ${
@@ -74,6 +80,7 @@ const AdminDashboardNavbar = () => {
                   }`}
                 />
               }
+              variant={isActive ? "flat" : "light"}
             >
               {item.name}
             </Button>

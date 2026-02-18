@@ -1,9 +1,11 @@
-import authService from "@/services/auth.service";
 import { useMutation } from "@tanstack/react-query";
+
+import authService from "@/services/auth.service";
 
 const useActivation = () => {
   const activationService = async (code: string) => {
     const res = await authService.activation(code);
+
     return res.data.data;
   };
 

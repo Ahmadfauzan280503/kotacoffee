@@ -1,9 +1,10 @@
-import cartService from "@/services/cart.service";
-import { TCart } from "@/types/cart";
 import { addToast } from "@heroui/react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
+
+import { TCart } from "@/types/cart";
+import cartService from "@/services/cart.service";
 
 const useCart = () => {
   const router = useRouter();
@@ -18,8 +19,9 @@ const useCart = () => {
 
     const res = await cartService.addToCart(
       payload,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 
@@ -38,10 +40,13 @@ const useCart = () => {
         });
       },
       onError: (error) => {
-        console.log(error);
+        console.error("Add to cart error:", error);
+        const errorMessage =
+          (error as any)?.response?.data?.message || error.message;
+
         addToast({
           title: "Gagal",
-          description: "Produk gagal ditambahkan ke keranjang",
+          description: "Produk gagal ditambahkan ke keranjang: " + errorMessage,
           color: "danger",
         });
       },
@@ -50,7 +55,16 @@ const useCart = () => {
   // get carts
   const getCartsService = async () => {
     const res = await cartService.getCarts(session?.user.token as string);
-    return res.data || null;
+    const items = res.data?.data || [];
+
+    return {
+      data: {
+        items: items,
+        _count: {
+          items: items.length,
+        },
+      },
+    };
   };
 
   const { data: dataCarts, isLoading: isLoadingCarts } = useQuery({
@@ -63,8 +77,9 @@ const useCart = () => {
   const deleteItemService = async (itemId: string) => {
     const res = await cartService.deleteItem(
       itemId,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 
@@ -82,10 +97,13 @@ const useCart = () => {
         });
       },
       onError: (error) => {
-        console.log(error);
+        console.error("Delete item error:", error);
+        const errorMessage =
+          (error as any)?.response?.data?.message || error.message;
+
         addToast({
           title: "Gagal",
-          description: "Produk gagal dihapus dari keranjang" + error,
+          description: "Produk gagal dihapus dari keranjang: " + errorMessage,
           color: "danger",
         });
       },
@@ -95,8 +113,9 @@ const useCart = () => {
   const increaseService = async (itemId: string) => {
     const res = await cartService.increaseQuantity(
       itemId,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -110,10 +129,13 @@ const useCart = () => {
       queryClient.invalidateQueries({ queryKey: ["carts"], exact: true });
     },
     onError: (error) => {
-      console.log(error);
+      console.error("Increase quantity error:", error);
+      const errorMessage =
+        (error as any)?.response?.data?.message || error.message;
+
       addToast({
         title: "Gagal",
-        description: "Jumlah produk gagal ditambahkan" + error,
+        description: "Jumlah produk gagal ditambahkan: " + errorMessage,
         color: "danger",
       });
     },
@@ -123,8 +145,9 @@ const useCart = () => {
   const decreaseService = async (itemId: string) => {
     const res = await cartService.decreaseQuantity(
       itemId,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -138,10 +161,13 @@ const useCart = () => {
       queryClient.invalidateQueries({ queryKey: ["carts"], exact: true });
     },
     onError: (error) => {
-      console.log(error);
+      console.error("Decrease quantity error:", error);
+      const errorMessage =
+        (error as any)?.response?.data?.message || error.message;
+
       addToast({
         title: "Gagal",
-        description: "Jumlah produk gagal dikurangi" + error,
+        description: "Jumlah produk gagal dikurangi: " + errorMessage,
         color: "danger",
       });
     },

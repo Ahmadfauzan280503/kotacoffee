@@ -1,8 +1,5 @@
 "use client";
 
-import { orderSchema } from "@/schemas/order.schema";
-import orderService from "@/services/order.service";
-import { TOrderInput } from "@/types/order";
 import { addToast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -10,8 +7,14 @@ import { useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import useChangeUrl from "./useChangeUrl";
 import axios from "axios";
+
+import useChangeUrl from "./useChangeUrl";
+
+import { TOrderInput } from "@/types/order";
+import paymentService from "@/services/payment.service";
+import orderService from "@/services/order.service";
+import { orderSchema } from "@/schemas/order.schema";
 
 const useOrder = () => {
   const [orderId, setOrderId] = useState("");
@@ -27,43 +30,51 @@ const useOrder = () => {
     handleSubmit,
     formState: { errors },
     setValue,
+    watch,
   } = useForm({
     resolver: zodResolver(orderSchema),
     defaultValues: {
       address: "",
+      paymentMethod: "",
     },
   });
 
   // create order / checkout
   const createOrderService = async (payload: TOrderInput) => {
     const res = await orderService.create(
-      payload,
-      session?.user?.token as string
+      {
+        shippingAddress: payload.address,
+        paymentMethod: payload.paymentMethod,
+        notes: "",
+      } as any,
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
   const { mutate: mutateCreateOrder, isPending: isPendingCreateOrder } =
     useMutation({
       mutationFn: createOrderService,
-      onSuccess: (order) => {
-        const paymentUrl = order?.data.paymentUrl;
-        router.push(paymentUrl);
+      onSuccess: () => {
+        addToast({
+          title: "Berhasil",
+          description: "Pesanan berhasil dibuat!",
+          color: "success",
+        });
+        queryClient.invalidateQueries({ queryKey: ["cart"] });
+        router.push("/profile/orders");
       },
       onError: (error) => {
         console.log(error);
-        if (axios.isAxiosError(error) && error.code === "ECONNABORTED") {
-          addToast({
-            timeout: 30000,
-            title: "Gagal",
-            description: "Gagal membuat order" + error,
-            color: "danger",
-          });
-        }
+        const errorMessage = axios.isAxiosError(error)
+          ? error.response?.data?.message || error.message
+          : "Gagal membuat pesanan";
+
         addToast({
           timeout: 30000,
           title: "Gagal",
-          description: "Gagal membuat order" + error,
+          description: errorMessage,
           color: "danger",
         });
       },
@@ -74,14 +85,17 @@ const useOrder = () => {
 
   // get order user
   const getOrderUserService = async () => {
-    let params = `search=${search}&page=${page}&limit=${limit}`;
-    if (!search && !page && !limit) {
-      params = "";
-    }
+    const queryParams = new URLSearchParams();
+
+    if (search) queryParams.set("search", search);
+    if (page) queryParams.set("page", String(page));
+    if (limit) queryParams.set("limit", String(limit));
+    const params = queryParams.toString();
     const res = await orderService.getOrderUser(
       session?.user?.token as string,
-      params
+      params,
     );
+
     return res.data;
   };
 
@@ -93,14 +107,17 @@ const useOrder = () => {
 
   // get order seller
   const getOrderSellerService = async () => {
-    let params = `search=${search}&page=${page}&limit=${limit}`;
-    if (!search && !page && !limit) {
-      params = "";
-    }
+    const queryParams = new URLSearchParams();
+
+    if (search) queryParams.set("search", search);
+    if (page) queryParams.set("page", String(page));
+    if (limit) queryParams.set("limit", String(limit));
+    const params = queryParams.toString();
     const res = await orderService.getOrderSeller(
       session?.user?.token as string,
-      params
+      params,
     );
+
     return res.data;
   };
 
@@ -108,14 +125,16 @@ const useOrder = () => {
     useQuery({
       queryKey: ["order-seller", search, page, limit],
       queryFn: getOrderSellerService,
+      enabled: !!session?.user?.token,
     });
 
   // get order by invoice id
   const getOrderByInvoiceIdService = async (invoiceId: string) => {
     const res = await orderService.getOrderByInvoiceId(
       invoiceId,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -131,8 +150,9 @@ const useOrder = () => {
   const getOrderByIdService = async () => {
     const res = await orderService.getOrderById(
       orderId,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -145,8 +165,9 @@ const useOrder = () => {
   const isProcessingService = async (id: string) => {
     const res = await orderService.isProcessing(
       id,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -179,8 +200,9 @@ const useOrder = () => {
   const isDeliveredService = async (id: string) => {
     const res = await orderService.isDelivered(
       id,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -213,8 +235,9 @@ const useOrder = () => {
   const isCompletedService = async (id: string) => {
     const res = await orderService.isCompleted(
       id,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -243,6 +266,138 @@ const useOrder = () => {
         });
       },
     });
+
+  // get order admin
+  const getOrderAdminService = async () => {
+    const queryParams = new URLSearchParams();
+
+    if (search) queryParams.set("search", search);
+    if (page) queryParams.set("page", String(page));
+    if (limit) queryParams.set("limit", String(limit));
+    const params = queryParams.toString();
+    const res = await orderService.getOrderAdmin(
+      session?.user?.token as string,
+      params,
+    );
+
+    return res.data;
+  };
+
+  const { data: dataOrderAdmin, isLoading: isLoadingDataOrderAdmin } = useQuery(
+    {
+      queryKey: ["order-admin", search, page, limit],
+      queryFn: getOrderAdminService,
+      enabled: !!session?.user?.token && session?.user?.role === "admin",
+      refetchInterval: 5000, // Auto refresh every 5 seconds for admin dashboard
+    },
+  );
+
+  // update order status (admin)
+  const updateOrderStatusService = async ({
+    id,
+    status,
+  }: {
+    id: string;
+    status: string;
+  }) => {
+    const res = await orderService.updateOrderStatus(
+      id,
+      status,
+      session?.user?.token as string,
+    );
+
+    return res.data;
+  };
+
+  const {
+    mutate: mutateUpdateOrderStatus,
+    isPending: isPendingUpdateOrderStatus,
+  } = useMutation({
+    mutationFn: updateOrderStatusService,
+    onSuccess: (order) => {
+      queryClient.invalidateQueries({
+        queryKey: ["order-admin"],
+      });
+      queryClient.invalidateQueries({
+        queryKey: ["order-by-id", order?.data?.id],
+      });
+      addToast({
+        title: "Berhasil",
+        description: "Status order berhasil diperbarui",
+        color: "success",
+      });
+    },
+    onError: (error) => {
+      console.log(error);
+      addToast({
+        title: "Gagal",
+        description: "Gagal memperbarui status order",
+        color: "danger",
+      });
+    },
+  });
+
+  // delete order (admin)
+  const deleteOrderService = async (id: string) => {
+    const res = await orderService.deleteOrder(
+      id,
+      session?.user?.token as string,
+    );
+
+    return res.data;
+  };
+
+  const { mutate: mutateDeleteOrder, isPending: isPendingDeleteOrder } =
+    useMutation({
+      mutationFn: deleteOrderService,
+      onSuccess: () => {
+        queryClient.invalidateQueries({
+          queryKey: ["order-admin"],
+        });
+        addToast({
+          title: "Berhasil",
+          description: "Order berhasil dihapus",
+          color: "success",
+        });
+      },
+      onError: (error) => {
+        console.log(error);
+        addToast({
+          title: "Gagal",
+          description: "Gagal menghapus order",
+          color: "danger",
+        });
+      },
+    });
+
+  // Midtrans Payment
+  const getMidtransTokenService = async (payload: {
+    amount: number;
+    orderId?: string;
+    items?: any[];
+  }) => {
+    const res = await paymentService.getMidtransToken(
+      payload,
+      session?.user?.token as string,
+    );
+
+    return res.data;
+  };
+
+  const {
+    mutateAsync: mutateGetMidtransToken,
+    isPending: isPendingGetMidtransToken,
+  } = useMutation({
+    mutationFn: getMidtransTokenService,
+    onError: (error) => {
+      console.log(error);
+      addToast({
+        title: "Gagal",
+        description: "Gagal memproses pembayaran",
+        color: "danger",
+      });
+    },
+  });
 
   return {
     // form
@@ -275,6 +430,16 @@ const useOrder = () => {
     isPendingIsDelivered,
     mutateIsCompleted,
     isPendingIsCompleted,
+    // admin only
+    dataOrderAdmin,
+    isLoadingDataOrderAdmin,
+    mutateUpdateOrderStatus,
+    isPendingUpdateOrderStatus,
+    mutateDeleteOrder,
+    isPendingDeleteOrder,
+    watch,
+    mutateGetMidtransToken,
+    isPendingGetMidtransToken,
   };
 };
 

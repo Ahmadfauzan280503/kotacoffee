@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 import {
   IRegister,
   IUpdatePhoto,
@@ -12,6 +13,8 @@ export default {
   register: (payload: IRegister) =>
     instance.post(`${endpoint.AUTH}/register`, payload),
   login: (payload: TLogin) => instance.post(`${endpoint.AUTH}/login`, payload),
+  googleLogin: (payload: { email: string; name: string; photoUrl: string }) =>
+    instance.post(`${endpoint.AUTH}/login/google`, payload),
   getUserByToken: (token: string) =>
     instance.get(`${endpoint.AUTH}/me`, {
       headers: {

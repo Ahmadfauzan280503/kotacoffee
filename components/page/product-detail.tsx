@@ -1,8 +1,5 @@
 "use client";
 
-import useCart from "@/hooks/useCart";
-import { TProduct } from "@/types/product";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import {
   Button,
   Card,
@@ -24,6 +21,10 @@ import {
   FiTruck,
 } from "react-icons/fi";
 
+import { rupiahFormat } from "@/utils/rupiahFormat";
+import { TProduct } from "@/types/product";
+import useCart from "@/hooks/useCart";
+
 const ProductDetail = ({ product }: { product: TProduct }) => {
   const { data: session } = useSession();
   const { name, price, stock, imageUrl, seller, description } = product;
@@ -34,10 +35,10 @@ const ProductDetail = ({ product }: { product: TProduct }) => {
     <div className="container mx-auto px-4 py-8">
       {/* Back button */}
       <Button
-        variant="light"
         className="mb-6"
-        onPress={() => router.back()}
         startContent={<FiArrowLeft className="w-4 h-4" />}
+        variant="light"
+        onPress={() => router.back()}
       >
         Kembali
       </Button>
@@ -47,16 +48,16 @@ const ProductDetail = ({ product }: { product: TProduct }) => {
         <div className="space-y-4">
           <div className="relative overflow-hidden rounded-lg">
             <img
-              src={imageUrl}
               alt={name}
               className="w-full h-96 object-cover"
+              src={imageUrl}
             />
             {false && (
               <Chip
                 className="absolute top-4 left-4"
                 color="danger"
-                variant="solid"
                 size="sm"
+                variant="solid"
               >
                 -{15}%
               </Chip>
@@ -65,8 +66,8 @@ const ProductDetail = ({ product }: { product: TProduct }) => {
               <Chip
                 className="absolute top-4 right-4"
                 color="success"
-                variant="solid"
                 size="sm"
+                variant="solid"
               >
                 Organik
               </Chip>
@@ -119,20 +120,20 @@ const ProductDetail = ({ product }: { product: TProduct }) => {
 
           {/* Add to Cart */}
           {stock > 0 &&
-          seller?.userId !== session?.user.id &&
-          session?.user.role !== "superadmin" ? (
+          seller?.userId !== session?.user?.id &&
+          session?.user?.role !== "superadmin" ? (
             <Button
               className="w-full text-white"
-              size="lg"
               color="success"
+              disabled={isPendingAddToCart}
+              size="lg"
               startContent={
                 isPendingAddToCart ? (
-                  <Spinner size="sm" color="white" />
+                  <Spinner color="white" size="sm" />
                 ) : (
                   <FiShoppingCart className="w-5 h-5" />
                 )
               }
-              disabled={isPendingAddToCart}
               onPress={() =>
                 mutateAddToCart({
                   payload: {
@@ -213,7 +214,7 @@ const ProductDetail = ({ product }: { product: TProduct }) => {
                   <span className="text-sm font-medium text-default-500">
                     Berat
                   </span>
-                  <p className="text-foreground">200-250g per ikat</p>
+                  <p className="text-foreground" />
                 </div>
                 <Divider />
                 <div>

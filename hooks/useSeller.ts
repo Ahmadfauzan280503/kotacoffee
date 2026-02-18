@@ -1,15 +1,17 @@
-import sellerService from "@/services/seller.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { sellerSchema } from "@/schemas/seller.schema";
 import { useSession } from "next-auth/react";
 import { addToast } from "@heroui/react";
 import { useRouter } from "next/navigation";
-import walletService from "@/services/wallet.service";
 import { useState } from "react";
-import { TSeller } from "@/types/seller";
+
 import useChangeUrl from "./useChangeUrl";
+
+import walletService from "@/services/wallet.service";
+import { TSeller } from "@/types/seller";
+import { sellerSchema } from "@/schemas/seller.schema";
+import sellerService from "@/services/seller.service";
 
 const useSeller = () => {
   const [sellerId, setSellerId] = useState<string | null>(null);
@@ -31,14 +33,16 @@ const useSeller = () => {
   const createSellerService = async (payload: TSeller) => {
     const res = await sellerService.create(
       payload,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
   // create wallet
   const createWalletService = async () => {
     const res = await walletService.create(session?.user?.token as string);
+
     return res.data;
   };
 
@@ -79,10 +83,12 @@ const useSeller = () => {
   // show
   const getSellerService = async () => {
     let params = `category=${category}&search=${search}&page=${page}&limit=${limit}`;
+
     if (!category && !search && !page && !limit) {
       params = "";
     }
     const res = await sellerService.me(session?.user?.token as string, params);
+
     return res?.data?.data;
   };
 
@@ -95,8 +101,9 @@ const useSeller = () => {
   const updateSellerService = async (payload: TSeller) => {
     const res = await sellerService.update(
       payload,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -126,13 +133,15 @@ const useSeller = () => {
   // get all seller
   const getAllSellerService = async () => {
     let params = `search=${search}&page=${page}&limit=${limit}`;
+
     if (!search && !page && !limit) {
       params = "";
     }
     const res = await sellerService.index(
       session?.user?.token as string,
-      params
+      params,
     );
+
     return res.data;
   };
 
@@ -145,8 +154,9 @@ const useSeller = () => {
   const getSellerByIdService = async () => {
     const res = await sellerService.getSellerById(
       sellerId as string,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -160,8 +170,9 @@ const useSeller = () => {
   const updateVerifiedService = async (id: string) => {
     const res = await sellerService.updateVerified(
       id,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -197,8 +208,9 @@ const useSeller = () => {
   const adminDeleteSellerService = async (id: string) => {
     const res = await sellerService.adminDeleteSeller(
       id,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 

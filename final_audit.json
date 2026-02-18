@@ -1,0 +1,350 @@
+{
+  "auditReportVersion": 2,
+  "vulnerabilities": {
+    "@eslint-community/eslint-utils": {
+      "name": "@eslint-community/eslint-utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "eslint"
+      ],
+      "effects": [
+        "@typescript-eslint/utils",
+        "eslint"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@eslint-community/eslint-utils"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@eslint/compat": {
+      "name": "@eslint/compat",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "eslint"
+      ],
+      "effects": [],
+      "range": ">=1.2.0",
+      "nodes": [
+        "node_modules/@eslint/compat"
+      ],
+      "fixAvailable": {
+        "name": "@eslint/compat",
+        "version": "1.1.1",
+        "isSemVerMajor": true
+      }
+    },
+    "@eslint/eslintrc": {
+      "name": "@eslint/eslintrc",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "ajv"
+      ],
+      "effects": [
+        "eslint"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@eslint/eslintrc"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/eslint-plugin": {
+      "name": "@typescript-eslint/eslint-plugin",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@typescript-eslint/parser",
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils",
+        "eslint"
+      ],
+      "effects": [
+        "eslint-config-next",
+        "eslint-plugin-unused-imports"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@typescript-eslint/eslint-plugin"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/parser": {
+      "name": "@typescript-eslint/parser",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "eslint"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin",
+        "eslint-config-next"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@typescript-eslint/parser"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/type-utils": {
+      "name": "@typescript-eslint/type-utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@typescript-eslint/utils",
+        "eslint"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin"
+      ],
+      "range": ">=5.9.2-alpha.0",
+      "nodes": [
+        "node_modules/@typescript-eslint/type-utils"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "@typescript-eslint/utils": {
+      "name": "@typescript-eslint/utils",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "@eslint-community/eslint-utils",
+        "eslint"
+      ],
+      "effects": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/type-utils"
+      ],
+      "range": "*",
+      "nodes": [
+        "node_modules/@typescript-eslint/utils"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "ajv": {
+      "name": "ajv",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        {
+          "source": 1113214,
+          "name": "ajv",
+          "dependency": "ajv",
+          "title": "ajv has ReDoS when using `$data` option",
+          "url": "https://github.com/advisories/GHSA-2g4f-4pwh-qvx6",
+          "severity": "moderate",
+          "cwe": [
+            "CWE-400"
+          ],
+          "cvss": {
+            "score": 0,
+            "vectorString": null
+          },
+          "range": "<8.18.0"
+        }
+      ],
+      "effects": [
+        "@eslint/eslintrc",
+        "eslint"
+      ],
+      "range": "<8.18.0",
+      "nodes": [
+        "node_modules/ajv"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint": {
+      "name": "eslint",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@eslint-community/eslint-utils",
+        "@eslint/eslintrc",
+        "ajv"
+      ],
+      "effects": [
+        "@eslint-community/eslint-utils",
+        "@eslint/compat",
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "@typescript-eslint/type-utils",
+        "@typescript-eslint/utils",
+        "eslint-config-next",
+        "eslint-config-prettier",
+        "eslint-plugin-es",
+        "eslint-plugin-node",
+        "eslint-plugin-prettier",
+        "eslint-plugin-unused-imports"
+      ],
+      "range": ">=4.2.0",
+      "nodes": [
+        "node_modules/eslint"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-config-next": {
+      "name": "eslint-config-next",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@typescript-eslint/eslint-plugin",
+        "@typescript-eslint/parser",
+        "eslint"
+      ],
+      "effects": [],
+      "range": ">=10.2.1-canary.2",
+      "nodes": [
+        "node_modules/eslint-config-next"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-next",
+        "version": "0.2.4",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-config-prettier": {
+      "name": "eslint-config-prettier",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "eslint"
+      ],
+      "effects": [
+        "eslint-plugin-prettier"
+      ],
+      "range": ">=7.0.0",
+      "nodes": [
+        "node_modules/eslint-config-prettier"
+      ],
+      "fixAvailable": {
+        "name": "eslint-config-prettier",
+        "version": "6.15.0",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-plugin-es": {
+      "name": "eslint-plugin-es",
+      "severity": "moderate",
+      "isDirect": false,
+      "via": [
+        "eslint"
+      ],
+      "effects": [],
+      "range": ">=1.0.0",
+      "nodes": [
+        "node_modules/eslint-plugin-es"
+      ],
+      "fixAvailable": true
+    },
+    "eslint-plugin-node": {
+      "name": "eslint-plugin-node",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "eslint",
+        "eslint-plugin-es"
+      ],
+      "effects": [],
+      "range": ">=7.0.0-beta.0",
+      "nodes": [
+        "node_modules/eslint-plugin-node"
+      ],
+      "fixAvailable": {
+        "name": "eslint-plugin-node",
+        "version": "6.0.1",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-plugin-prettier": {
+      "name": "eslint-plugin-prettier",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "eslint",
+        "eslint-config-prettier"
+      ],
+      "effects": [],
+      "range": ">=3.0.0",
+      "nodes": [
+        "node_modules/eslint-plugin-prettier"
+      ],
+      "fixAvailable": {
+        "name": "eslint-plugin-prettier",
+        "version": "2.7.0",
+        "isSemVerMajor": true
+      }
+    },
+    "eslint-plugin-unused-imports": {
+      "name": "eslint-plugin-unused-imports",
+      "severity": "moderate",
+      "isDirect": true,
+      "via": [
+        "@typescript-eslint/eslint-plugin",
+        "eslint"
+      ],
+      "effects": [],
+      "range": "0.0.3 - 1.0.1 || >=1.1.4",
+      "nodes": [
+        "node_modules/eslint-plugin-unused-imports"
+      ],
+      "fixAvailable": {
+        "name": "eslint-plugin-unused-imports",
+        "version": "1.1.3",
+        "isSemVerMajor": true
+      }
+    }
+  },
+  "metadata": {
+    "vulnerabilities": {
+      "info": 0,
+      "low": 0,
+      "moderate": 15,
+      "high": 0,
+      "critical": 0,
+      "total": 15
+    },
+    "dependencies": {
+      "prod": 378,
+      "dev": 340,
+      "optional": 81,
+      "peer": 0,
+      "peerOptional": 0,
+      "total": 752
+    }
+  }
+}

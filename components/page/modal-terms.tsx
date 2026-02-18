@@ -19,11 +19,11 @@ const ModalTerms = ({
 }) => {
   return (
     <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      size="5xl"
-      scrollBehavior="outside"
       backdrop="blur"
+      isOpen={isOpen}
+      scrollBehavior="outside"
+      size="5xl"
+      onOpenChange={onOpenChange}
     >
       <ModalContent>
         {(onClose) => (
@@ -225,17 +225,17 @@ const ModalTerms = ({
                   </p>
                   <div className="mt-4 space-x-4">
                     <Button
-                      color="success"
                       className="text-white"
+                      color="success"
                       onPress={onClose}
                     >
                       Saya Setuju & Daftar
                     </Button>
                     <Button
                       as={Link}
-                      href="/"
-                      color="success"
                       className="text-white"
+                      color="success"
+                      href="/"
                     >
                       Kembali ke Beranda
                     </Button>

@@ -1,0 +1,142 @@
+
+> next-app-template@0.0.1 lint
+> eslint --fix
+
+
+C:\Users\ASUS\Coffeeshop\app\admin\dashboard\layout.tsx
+  173:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+  173:9  error    Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+
+C:\Users\ASUS\Coffeeshop\app\dashboard\layout.tsx
+  173:9  warning  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                     jsx-a11y/click-events-have-key-events
+  173:9  error    Avoid non-native interactive elements. If using native HTML is not possible, add an appropriate role and support for tabbing, mouse, keyboard, and touch inputs to an interactive content element  jsx-a11y/no-static-element-interactions
+
+C:\Users\ASUS\Coffeeshop\components\Footer.tsx
+   36:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+   60:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+   75:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+   83:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+   91:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+   99:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  107:17  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  147:15  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  153:15  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  159:15  error  The href attribute requires a valid value to be accessible. Provide a valid, navigable address as the href value. If you cannot provide a valid href, but still need the element to resemble a link, use a button and change it with appropriate styles. Learn more: https://github.com/jsx-eslint/eslint-plugin-jsx-a11y/blob/HEAD/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+C:\Users\ASUS\Coffeeshop\components\motion-primitives\text-effect.tsx
+  182:17  warning  '_' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\ASUS\Coffeeshop\components\navbar.tsx
+  46:11  warning  'isOpen' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  46:19  warning  'onOpen' is assigned a value but never used        @typescript-eslint/no-unused-vars
+  46:27  warning  'onOpenChange' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\ASUS\Coffeeshop\components\page\admin\dashboard\admin-dashboard.tsx
+  242:23  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\ASUS\Coffeeshop\components\page\checkout.tsx
+   55:25  warning  'setIsMockLoading' is assigned a value but never used                                                                                                                                                                                                                                    @typescript-eslint/no-unused-vars
+   80:13  warning  Unexpected console statement                                                                                                                                                                                                                                                             no-console
+   90:13  warning  Unexpected console statement                                                                                                                                                                                                                                                             no-console
+   98:13  warning  Unexpected console statement                                                                                                                                                                                                                                                             no-console
+  106:13  warning  Unexpected console statement                                                                                                                                                                                                                                                             no-console
+  113:7   warning  Unexpected console statement                                                                                                                                                                                                                                                             no-console
+  302:27  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+  448:45  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+  448:56  error    `'` can be escaped with `&apos;`, `&lsquo;`, `&#39;`, `&rsquo;`                                                                                                                                                                                                                          react/no-unescaped-entities
+
+C:\Users\ASUS\Coffeeshop\components\page\dashboard\OrderUser\order-user.tsx
+   48:11  warning  'urlPage' is assigned a value but never used                     @typescript-eslint/no-unused-vars
+  198:31  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  198:62  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+C:\Users\ASUS\Coffeeshop\components\page\dashboard\product\product-form.tsx
+  76:5  warning  'reset' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\ASUS\Coffeeshop\components\page\product-detail.tsx
+  50:13  warning  Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+C:\Users\ASUS\Coffeeshop\components\page\profile\profile-photo.tsx
+  27:11  warning  'onClose' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\ASUS\Coffeeshop\components\page\profile\security\security.tsx
+  12:9  warning  'router' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+C:\Users\ASUS\Coffeeshop\components\page\register.tsx
+  37:19  warning  'onOpen' is assigned a value but never used                                                    @typescript-eslint/no-unused-vars
+  56:19  error    The autoFocus prop should not be used, as it can reduce usability and accessibility for users  jsx-a11y/no-autofocus
+
+C:\Users\ASUS\Coffeeshop\hooks\useActivation.ts
+  17:9  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useCart.ts
+   34:19  warning  'data' is defined but never used. Allowed unused args must match /^_.*?$/u  @typescript-eslint/no-unused-vars
+   43:9   warning  Unexpected console statement                                                no-console
+  100:9   warning  Unexpected console statement                                                no-console
+  132:7   warning  Unexpected console statement                                                no-console
+  164:7   warning  Unexpected console statement                                                no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useCategory.ts
+   92:9  warning  Unexpected console statement  no-console
+  126:9  warning  Unexpected console statement  no-console
+  174:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useChangePassword.ts
+  55:9  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useMedia.ts
+  34:9  warning  Unexpected console statement  no-console
+  76:9  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useOrder.ts
+   69:9  warning  Unexpected console statement  no-console
+  191:9  warning  Unexpected console statement  no-console
+  226:9  warning  Unexpected console statement  no-console
+  261:9  warning  Unexpected console statement  no-console
+  331:7  warning  Unexpected console statement  no-console
+  364:9  warning  Unexpected console statement  no-console
+  393:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\usePhotoProfile.ts
+  88:9  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useProduct.ts
+   98:9  warning  Unexpected console statement  no-console
+  181:9  warning  Unexpected console statement  no-console
+  228:7  warning  Unexpected console statement  no-console
+  269:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useProfile.ts
+  83:9  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useRegister.ts
+  46:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useSeller.ts
+   52:7  warning  Unexpected console statement  no-console
+   72:7  warning  Unexpected console statement  no-console
+  122:9  warning  Unexpected console statement  no-console
+  198:9  warning  Unexpected console statement  no-console
+  234:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useTransfer.ts
+  57:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useUnit.ts
+  77:9  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useUser.ts
+  75:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\hooks\useWalletTransaction.ts
+  122:7  warning  Unexpected console statement  no-console
+  163:7  warning  Unexpected console statement  no-console
+
+C:\Users\ASUS\Coffeeshop\lib\auth.ts
+  53:11  warning  Unexpected console statement                                                no-console
+  61:20  warning  'user' is defined but never used. Allowed unused args must match /^_.*?$/u  @typescript-eslint/no-unused-vars
+  68:11  warning  Unexpected console statement                                                no-console
+  99:13  warning  Unexpected console statement                                                no-console
+
+✖ 77 problems (17 errors, 60 warnings)
+

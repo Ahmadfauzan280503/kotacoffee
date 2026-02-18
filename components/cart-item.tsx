@@ -1,9 +1,10 @@
+import { Card, CardBody } from "@heroui/react";
+import Image from "next/image";
+import { FaMinus, FaPlus, FaRegTrashAlt } from "react-icons/fa";
+
 import useCart from "@/hooks/useCart";
 import { TCartItem } from "@/types/cart";
 import { rupiahFormat } from "@/utils/rupiahFormat";
-import { Button, Card, CardBody } from "@heroui/react";
-import Image from "next/image";
-import { FaMinus, FaPlus, FaRegTrashAlt } from "react-icons/fa";
 
 interface PropTypes {
   item: TCartItem;
@@ -21,15 +22,16 @@ const CartItem = ({ item, isCheckout = false }: PropTypes) => {
   } = useCart();
 
   return (
-    <Card radius="sm" shadow="sm" className="w-full">
+    <Card className="w-full" radius="sm" shadow="sm">
       <CardBody className="flex gap-3 justify-between flex-row">
         <div className="flex gap-2 items-center">
           <Image
-            src={item?.product?.imageUrl}
             alt={item?.product?.name}
-            width={50}
-            height={50}
             className="aspect-square object-cover rounded-sm"
+            height={50}
+            src={item?.product?.imageUrl}
+            unoptimized={item?.product?.imageUrl?.includes("supabase.co")}
+            width={50}
           />
           <div>
             <h3 className="font-medium text-sm">{item?.product?.name}</h3>
@@ -37,7 +39,7 @@ const CartItem = ({ item, isCheckout = false }: PropTypes) => {
               {item?.product?.seller?.storeName}
             </p>
             <p className="font-medium text-success">
-              {rupiahFormat(item?.price)} / kg
+              {rupiahFormat(item?.product?.price)} / Pcs
             </p>
           </div>
         </div>
@@ -66,13 +68,13 @@ const CartItem = ({ item, isCheckout = false }: PropTypes) => {
               </div>
 
               <button
+                className="shrink-0 text-danger w-5 h-5 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed disabled:text-danger-300"
                 disabled={
                   isPendingDeleteItem ||
                   isPendingIncreaseQuantity ||
                   isPendingDecreaseQuantity
                 }
                 onClick={() => mutateDeleteItem({ itemId: item?.id })}
-                className="shrink-0 text-danger w-5 h-5 flex items-center justify-center cursor-pointer disabled:cursor-not-allowed disabled:text-danger-300"
               >
                 <FaRegTrashAlt />
               </button>
@@ -83,4 +85,5 @@ const CartItem = ({ item, isCheckout = false }: PropTypes) => {
     </Card>
   );
 };
+
 export default CartItem;

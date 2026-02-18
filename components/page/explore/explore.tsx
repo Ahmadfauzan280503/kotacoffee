@@ -1,12 +1,5 @@
 "use client";
 
-import { SearchIcon } from "@/components/icons";
-import ProductCard from "@/components/product-card";
-import useCategory from "@/hooks/useCateogry";
-import useChangeUrl from "@/hooks/useChangeUrl";
-import useProduct from "@/hooks/useProduct";
-import { TCategory } from "@/types/category";
-import { TProduct } from "@/types/product";
 import {
   Card,
   CardBody,
@@ -19,6 +12,14 @@ import {
 } from "@heroui/react";
 import { useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+
+import { SearchIcon } from "@/components/icons";
+import ProductCard from "@/components/product-card";
+import useCategory from "@/hooks/useCategory";
+import useChangeUrl from "@/hooks/useChangeUrl";
+import useProduct from "@/hooks/useProduct";
+import { TCategory } from "@/types/category";
+import { TProduct } from "@/types/product";
 
 const Explore = () => {
   const searchParams = useSearchParams();
@@ -45,25 +46,26 @@ const Explore = () => {
         <div className="flex items-center justify-between mb-6 gap-2">
           <div>
             <h1 className="text-lg lg:text-2xl font-bold text-foreground">
-              Jelajahi Sayur Segar
+              Explore Our Menu
             </h1>
             <p className="text-foreground-500 text-xs lg:text-base">
-              Temukan sayuran dan buah segar langsung dari petani
+              Nikmati berbagai pilihan Coffee, Non-Coffee, dan Makanan favorit
+              Anda
             </p>
           </div>
 
           <div>
             <Input
+              isClearable
               suppressHydrationWarning
-              placeholder="Cari sayur segar..."
+              defaultValue={searchValue as string}
+              placeholder="Cari Minuman Coffee..."
               startContent={
                 <SearchIcon className="text-default-400 pointer-events-none flex-shrink-0" />
               }
               variant="bordered"
-              isClearable
-              onClear={handleClearSearch}
               onChange={handleChangeSearch}
-              defaultValue={searchValue as string}
+              onClear={handleClearSearch}
             />
           </div>
         </div>
@@ -77,14 +79,14 @@ const Explore = () => {
               </CardHeader>
               <CardBody>
                 <Select
+                  defaultSelectedKeys={[categoryFilterValue as string]}
+                  disabled={isLoadingCategories}
+                  isLoading={isLoadingCategories}
                   items={dataCategories?.categories || []}
                   label="Kategori"
                   placeholder="Pilih kategori"
                   variant="bordered"
-                  isLoading={isLoadingCategories}
-                  disabled={isLoadingCategories}
                   onChange={handleChangeCategory}
-                  defaultSelectedKeys={[categoryFilterValue as string]}
                 >
                   {(category: TCategory) => (
                     <SelectItem key={category?.id}>{category?.name}</SelectItem>
@@ -116,14 +118,14 @@ const Explore = () => {
             </div>
             <div className="mt-4 flex items-center justify-end">
               <Pagination
-                color="success"
+                showControls
                 classNames={{
                   cursor: "bg-success text-white",
                 }}
+                color="success"
+                page={dataProducts?.data?.pagination?.page}
                 size="sm"
-                showControls
-                page={dataProducts?.data?.currentPage}
-                total={dataProducts?.data?.totalPage}
+                total={dataProducts?.data?.pagination?.totalPages}
                 onChange={handleChangePage}
               />
             </div>

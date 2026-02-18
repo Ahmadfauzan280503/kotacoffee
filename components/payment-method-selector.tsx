@@ -1,6 +1,7 @@
 import { RadioGroup } from "@heroui/react";
 import { FiTruck } from "react-icons/fi";
 import { useState, useMemo } from "react";
+
 import { CustomRadio } from "./custom-radio";
 
 // Contoh props: cartItems diambil dari backend
@@ -19,18 +20,18 @@ export default function PaymentMethodSelector({
     // ambil payment method IDs dari seller pertama sebagai acuan
     let methodIds =
       cartItems[0]?.seller?.SellerPaymentMethod?.map(
-        (m: any) => m.paymentMethodId
+        (m: any) => m.paymentMethodId,
       ) || [];
 
     // reduce ke seller berikutnya -> cari irisan payment method IDs
     for (let i = 1; i < cartItems.length; i++) {
       const sellerMethodIds =
         cartItems[i]?.seller?.SellerPaymentMethod?.map(
-          (m: any) => m.paymentMethodId
+          (m: any) => m.paymentMethodId,
         ) || [];
 
       methodIds = methodIds.filter((methodId: string) =>
-        sellerMethodIds.includes(methodId)
+        sellerMethodIds.includes(methodId),
       );
     }
 

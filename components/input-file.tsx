@@ -1,9 +1,10 @@
-import cn from "@/utils/cn";
 import { ChangeEvent, useEffect, useId, useRef } from "react";
 import Image from "next/image";
 import { BsUpload } from "react-icons/bs";
 import { Button, Spinner } from "@heroui/react";
 import { FiTrash } from "react-icons/fi";
+
+import cn from "@/utils/cn";
 
 interface PropTypes {
   className?: string;
@@ -41,6 +42,7 @@ const InputFile = (props: PropTypes) => {
   const handleDrop = (e: DragEvent) => {
     e.preventDefault();
     const files = e.dataTransfer?.files;
+
     if (files && onUpload) {
       onUpload(files);
     }
@@ -48,6 +50,7 @@ const InputFile = (props: PropTypes) => {
 
   useEffect(() => {
     const dropCurrent = drop.current;
+
     if (dropCurrent) {
       dropCurrent.addEventListener("dragover", handleDragOver);
       dropCurrent.addEventListener("drop", handleDrop);
@@ -61,40 +64,44 @@ const InputFile = (props: PropTypes) => {
 
   const handleOnUpload = (e: ChangeEvent<HTMLInputElement>) => {
     const files = e.currentTarget.files;
+
     if (files && onUpload) {
       onUpload(files);
     }
   };
+
   return (
     <label
       ref={drop}
-      htmlFor={`file-dropzone-${dropzoneId}`}
       className={cn(
         "flex min-h-32 w-full cursor-pointer flex-col rounded-md border-2 border-dashed border-gray-400 bg-gray-50 dark:bg-gray-800 hover:bg-gray-100 dark:hover:bg-gray-700",
-        className
+        className,
       )}
+      htmlFor={`file-dropzone-${dropzoneId}`}
     >
       {preview ? (
         <div className="flex flex-col items-center justify-center p-4 relative">
           <div className="mb-2 w-1/2 relative">
             {/* Delete Button */}
             <Button
+              isIconOnly
               className="absolute top-2 right-2 z-50"
               color="danger"
-              isIconOnly
-              onPress={onDelete}
-              isLoading={isDeleting}
               disabled={isDeleting}
+              isLoading={isDeleting}
+              onPress={onDelete}
             >
               <FiTrash />
             </Button>
-            <Image
-              src={preview}
-              alt="image"
-              fill
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-              className="!relative rounded-lg"
-            />
+            {preview ? (
+              <Image
+                fill
+                alt="image"
+                className="!relative rounded-lg"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                src={preview}
+              />
+            ) : null}
           </div>
           <p className="text-center text-sm font-semibold text-gray-500 dark:text-gray-200">
             {preview.split("/").pop()}
@@ -113,8 +120,8 @@ const InputFile = (props: PropTypes) => {
             ) : (
               <>
                 <BsUpload
-                  size={32}
                   className="text-gray-500 dark:text-gray-200"
+                  size={32}
                 />
                 <p className="text-center text-sm font-semibold text-gray-500 dark:text-gray-200">
                   {isDroppable
@@ -128,13 +135,13 @@ const InputFile = (props: PropTypes) => {
       )}
 
       <input
-        type="file"
-        name={name}
-        id={`file-dropzone-${dropzoneId}`}
-        className="hidden"
         accept="image/*"
-        onChange={handleOnUpload}
+        className="hidden"
         disabled={preview !== "" || isUploading}
+        id={`file-dropzone-${dropzoneId}`}
+        name={name}
+        type="file"
+        onChange={handleOnUpload}
         onClick={(e) => {
           e.currentTarget.value = "";
           e.target.dispatchEvent(new Event("change", { bubbles: true }));
@@ -143,4 +150,5 @@ const InputFile = (props: PropTypes) => {
     </label>
   );
 };
+
 export default InputFile;

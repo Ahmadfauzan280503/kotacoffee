@@ -1,7 +1,7 @@
 import { z } from "zod";
 
 export const categorySchema = z.object({
-  imageUrl: z.string().nonempty("Foto tidak boleh kosong"),
+  imageUrl: z.string().optional().or(z.literal("")),
   name: z
     .string()
     .nonempty("Nama tidak boleh kosong")

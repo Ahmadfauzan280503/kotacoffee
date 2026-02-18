@@ -1,4 +1,3 @@
-import useChangeUrl from "@/hooks/useChangeUrl";
 import {
   Table,
   TableBody,
@@ -18,9 +17,12 @@ import {
 } from "@heroui/react";
 import React, { Key, ReactNode } from "react";
 import { FiPlus } from "react-icons/fi";
-import { SearchIcon } from "./icons";
-import { LIMIT_DEFAULT, LIMIT_LISTS } from "@/constant/PAGINATION";
 import { useSearchParams } from "next/navigation";
+
+import { SearchIcon } from "./icons";
+
+import { LIMIT_DEFAULT, LIMIT_LISTS } from "@/constant/PAGINATION";
+import useChangeUrl from "@/hooks/useChangeUrl";
 
 interface PropTypes {
   columns: Record<string, unknown>[];
@@ -67,19 +69,19 @@ const DataTable = ({
 
   const topContent = React.useMemo(() => {
     return (
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-end mb-4">
         <Input
-          className="lg:w-1/4 w-1/2"
+          isClearable
           suppressHydrationWarning
+          className="lg:w-80 w-full"
+          defaultValue={searhcValue as string}
           placeholder={searchPlaceholder}
           startContent={
             <SearchIcon className="text-default-400 pointer-events-none flex-shrink-0" />
           }
-          variant="bordered"
-          isClearable
-          onClear={handleClearSearch}
+          variant="flat"
           onChange={handleChangeSearch}
-          defaultValue={searhcValue as string}
+          onClear={handleClearSearch}
         />
       </div>
     );
@@ -91,15 +93,15 @@ const DataTable = ({
         {isPaginate ? (
           <>
             <Select
-              variant="bordered"
+              disallowEmptySelection
               className="w-32"
+              defaultSelectedKeys={[LIMIT_DEFAULT.toString()]}
               label="Show:"
               labelPlacement="outside-left"
-              defaultSelectedKeys={[LIMIT_DEFAULT.toString()]}
+              variant="bordered"
               onChange={(value) => {
                 handleChangeLimit(value);
               }}
-              disallowEmptySelection
             >
               {LIMIT_LISTS.map((limit) => (
                 <SelectItem key={limit.value}>{limit.label}</SelectItem>
@@ -107,12 +109,12 @@ const DataTable = ({
             </Select>
             <Pagination
               showControls
-              size="sm"
               classNames={{
                 cursor: "bg-success text-white",
               }}
               color="success"
               page={currentPage}
+              size="sm"
               total={totalPage as number}
               onChange={handleChangePage}
             />
@@ -131,9 +133,9 @@ const DataTable = ({
         </div>
         {addButton && (
           <Button
+            className="flex items-center gap-2 text-white"
             color="success"
             onPress={onPressAddButton}
-            className="flex items-center gap-2 text-white"
           >
             <FiPlus />
             {addButtonText}
@@ -163,10 +165,10 @@ const DataTable = ({
             )}
           </TableHeader>
           <TableBody
-            items={data}
-            isLoading={isLoading}
-            loadingContent={<Spinner color="success" />}
             emptyContent={emptyContent}
+            isLoading={isLoading}
+            items={data}
+            loadingContent={<Spinner color="success" />}
           >
             {(item) => (
               <TableRow key={item.id as Key}>

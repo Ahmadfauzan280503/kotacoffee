@@ -1,17 +1,17 @@
 "use client";
 
-import InputFile from "@/components/input-file";
-import useCategory from "@/hooks/useCateogry";
-import { TCategory } from "@/types/category";
-import cn from "@/utils/cn";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader, Input } from "@heroui/react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Controller } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import { MdCategory } from "react-icons/md";
+
+import cn from "@/utils/cn";
+import { TCategory } from "@/types/category";
+import useCategory from "@/hooks/useCategory";
+import InputFile from "@/components/input-file";
 
 const CategoryForm = ({
   type,
@@ -66,36 +66,43 @@ const CategoryForm = ({
       </div>
       <div>
         <form
-          onSubmit={handleSubmit(
-            type === "create" ? handleCreateCategory : handleUpdateCategory
-          )}
           className="space-y-4"
+          onSubmit={handleSubmit(
+            type === "create" ? handleCreateCategory : handleUpdateCategory,
+          )}
         >
           <Card>
             <CardHeader className="flex flex-col gap-w items-start">
               <h2 className="text-lg font-semibold">Foto Kategori</h2>
               <p className="text-sm text-foreground-500">
-                Unggah foto kategori
+                Unggah foto kategori (opsional)
               </p>
             </CardHeader>
             <CardBody>
+              {/* Info about image */}
+              <div className="mb-4 p-3 bg-default-100 rounded-lg">
+                <p className="text-xs text-foreground-500">
+                  💡 Tip: Foto kategori bersifat opsional. Jika tidak diupload,
+                  kategori tetap dapat dibuat.
+                </p>
+              </div>
               {/* Upload Image */}
               <div className="space-y-1">
                 <Controller
-                  name="imageUrl"
                   control={control}
+                  name="imageUrl"
                   render={({ field }) => (
                     <InputFile
                       {...field}
                       isDroppable
                       className={cn(errors.imageUrl && "border-red-500")}
+                      isDeleting={isPendingDeleteFile}
+                      isUploading={isPendingUploadFile}
+                      preview={typeof preview === "string" ? preview : ""}
+                      onDelete={() => handleDeleteImage(field.onChange)}
                       onUpload={(files) =>
                         handleUploadImage(files, field.onChange)
                       }
-                      isUploading={isPendingUploadFile}
-                      onDelete={() => handleDeleteImage(field.onChange)}
-                      isDeleting={isPendingDeleteFile}
-                      preview={typeof preview === "string" ? preview : ""}
                     />
                   )}
                 />
@@ -117,8 +124,8 @@ const CategoryForm = ({
               <div className="flex flex-col gap-4">
                 <div className="space-y-1">
                   <Controller
-                    name="name"
                     control={control}
+                    name="name"
                     render={({ field }) => (
                       <Input
                         label="Nama Kategori"
@@ -145,15 +152,15 @@ const CategoryForm = ({
               Batal
             </Button>
             <Button
-              type="submit"
-              color="success"
               className="text-white"
-              isLoading={isPendingCreateCategory || isPendingUpdateCategory}
+              color="success"
               disabled={
                 isPendingCreateCategory ||
                 isPendingUploadFile ||
                 isPendingUpdateCategory
               }
+              isLoading={isPendingCreateCategory || isPendingUpdateCategory}
+              type="submit"
             >
               {type === "create" ? "Buat Kategori" : "Ubah Kategori"}
             </Button>

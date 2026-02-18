@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import authService from "@/services/auth.service";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+
+import authService from "@/services/auth.service";
 import { regsiterSchema } from "@/schemas/register.schema";
 import { IRegister } from "@/types/auth";
 
@@ -47,6 +48,7 @@ const useRegister = () => {
   });
 
   const handleRegister = (data: IRegister) => mutateRegister(data);
+
   return {
     // state
     isVisiblePassword,

@@ -1,7 +1,5 @@
 "use client";
 
-import useUnit from "@/hooks/useUnit";
-import { IUnit } from "@/types/unit";
 import { Button } from "@heroui/button";
 import { Card, CardBody, CardHeader, Input } from "@heroui/react";
 import { useRouter } from "next/navigation";
@@ -9,6 +7,9 @@ import { Controller } from "react-hook-form";
 import { FaArrowLeft } from "react-icons/fa";
 import { TbWeight } from "react-icons/tb";
 import { useEffect } from "react";
+
+import { IUnit } from "@/types/unit";
+import useUnit from "@/hooks/useUnit";
 
 const UnitForm = ({
   type,
@@ -55,10 +56,10 @@ const UnitForm = ({
       </div>
       <div>
         <form
-          onSubmit={handleSubmit(
-            type === "create" ? handleCreateUnit : handleUpdateUnit
-          )}
           className="space-y-4"
+          onSubmit={handleSubmit(
+            type === "create" ? handleCreateUnit : handleUpdateUnit,
+          )}
         >
           <Card>
             <CardHeader className="flex flex-col gap-w items-start">
@@ -69,15 +70,15 @@ const UnitForm = ({
               <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-1">
                   <Controller
-                    name="name"
                     control={control}
+                    name="name"
                     render={({ field }) => (
                       <Input
                         label="Nama Satuan"
                         variant="bordered"
                         {...field}
-                        isInvalid={!!errors.name}
                         errorMessage={errors.name?.message}
+                        isInvalid={!!errors.name}
                       />
                     )}
                   />
@@ -85,15 +86,15 @@ const UnitForm = ({
 
                 <div className="space-y-1">
                   <Controller
-                    name="symbol"
                     control={control}
+                    name="symbol"
                     render={({ field }) => (
                       <Input
                         label="Simbol Satuan"
                         variant="bordered"
                         {...field}
-                        isInvalid={!!errors.symbol}
                         errorMessage={errors.symbol?.message}
+                        isInvalid={!!errors.symbol}
                       />
                     )}
                   />
@@ -109,11 +110,11 @@ const UnitForm = ({
               Batal
             </Button>
             <Button
-              type="submit"
-              color="success"
               className="text-white"
-              isLoading={isPendingCreateUnit || isPendingUpdateUnit}
+              color="success"
               disabled={isPendingCreateUnit || isPendingUpdateUnit}
+              isLoading={isPendingCreateUnit || isPendingUpdateUnit}
+              type="submit"
             >
               {type === "create" ? "Buat Unit" : "Ubah Unit"}
             </Button>

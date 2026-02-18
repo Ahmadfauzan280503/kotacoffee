@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 import { ITransfer } from "@/types/transfer";
 
 export default {

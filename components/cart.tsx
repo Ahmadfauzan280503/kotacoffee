@@ -1,8 +1,10 @@
 import { useMemo } from "react";
 import { Badge, Divider } from "@heroui/react";
 import { MdOutlineShoppingCart } from "react-icons/md";
-import { rupiahFormat } from "@/utils/rupiahFormat";
+
 import CartItem from "./cart-item";
+
+import { rupiahFormat } from "@/utils/rupiahFormat";
 
 interface PropTypes {
   items: any[];
@@ -10,8 +12,12 @@ interface PropTypes {
 
 const Cart = ({ items }: PropTypes) => {
   const subTotal = useMemo(
-    () => items?.reduce((total, item) => total + item.price, 0),
-    [items]
+    () =>
+      items?.reduce(
+        (total, item) => total + (item.product?.price || 0) * item.quantity,
+        0,
+      ),
+    [items],
   );
   // const ongkir = 5000;
   const total = subTotal;
@@ -25,9 +31,9 @@ const Cart = ({ items }: PropTypes) => {
             Keranjang Belanja
           </p>
           <Badge
+            className="bg-success text-white"
             content={items?.length}
             size="lg"
-            className="bg-success text-white"
           >
             <span className="sr-only">unread messages</span>
           </Badge>
@@ -74,4 +80,5 @@ const Cart = ({ items }: PropTypes) => {
     </>
   );
 };
+
 export default Cart;

@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 import { TOrderInput } from "@/types/order";
 
 export default {
@@ -47,6 +48,28 @@ export default {
     }),
   isCompleted: (id: string, token: string) =>
     instance.put(`${endpoint.ORDER}/completed/${id}`, undefined, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  getOrderAdmin: (token: string, params: string) =>
+    instance.get(`${endpoint.ORDER}/admin?${params}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }),
+  updateOrderStatus: (id: string, status: string, token: string) =>
+    instance.put(
+      `${endpoint.ORDER}/${id}/status`,
+      { status },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      },
+    ),
+  deleteOrder: (id: string, token: string) =>
+    instance.delete(`${endpoint.ORDER}/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

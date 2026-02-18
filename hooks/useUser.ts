@@ -1,9 +1,11 @@
-import userService from "@/services/user.service";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
-import useChangeUrl from "./useChangeUrl";
 import { useState } from "react";
 import { addToast } from "@heroui/react";
+
+import useChangeUrl from "./useChangeUrl";
+
+import userService from "@/services/user.service";
 
 const useUser = () => {
   const [sellectedId, setSellectedId] = useState("");
@@ -14,13 +16,15 @@ const useUser = () => {
   // get all users
   const getUsersService = async () => {
     let params = `search=${search}&page=${page}&limit=${limit}`;
+
     if (!search && !page && !limit) {
       params = "";
     }
     const res = await userService.getUsers(
       params,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -33,6 +37,7 @@ const useUser = () => {
   // get user
   const getUserService = async () => {
     const res = await userService.getUser(sellectedId);
+
     return res.data;
   };
 
@@ -47,6 +52,7 @@ const useUser = () => {
   // delete user
   const deleteUserService = async (id: string) => {
     const res = await userService.deleteUser(id, session?.user.token as string);
+
     return res.data;
   };
 

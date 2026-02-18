@@ -1,4 +1,3 @@
-import useCategory from "@/hooks/useCateogry";
 import {
   Button,
   Modal,
@@ -8,6 +7,8 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import React, { useEffect } from "react";
+
+import useCategory from "@/hooks/useCategory";
 
 interface PropTypes {
   isOpen: boolean;
@@ -38,7 +39,7 @@ const ModalDelete = ({
   }, [isSuccessDeleteCategory]);
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -53,11 +54,11 @@ const ModalDelete = ({
                 Batal
               </Button>
               <Button
-                color="success"
                 className="text-white"
-                onPress={() => handleDeleteCategory(selectedCategory)}
-                isLoading={isPendingDeleteCategory}
+                color="success"
                 disabled={isPendingDeleteCategory}
+                isLoading={isPendingDeleteCategory}
+                onPress={() => handleDeleteCategory(selectedCategory)}
               >
                 Hapus
               </Button>

@@ -1,4 +1,3 @@
-import useUser from "@/hooks/useUser";
 import {
   Button,
   Modal,
@@ -8,6 +7,8 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import React, { useEffect } from "react";
+
+import useUser from "@/hooks/useUser";
 
 interface PropTypes {
   isOpen: boolean;
@@ -33,8 +34,9 @@ const ModalDelete = ({
       setSelectedUser("");
     }
   }, [isSuccessDeleteUser]);
+
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange} onClose={onClose}>
+    <Modal isOpen={isOpen} onClose={onClose} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
@@ -56,8 +58,8 @@ const ModalDelete = ({
                 Batal
               </Button>
               <Button
-                color="success"
                 className="text-white"
+                color="success"
                 disabled={isPendingDeleteUser}
                 isLoading={isPendingDeleteUser}
                 onPress={() => {

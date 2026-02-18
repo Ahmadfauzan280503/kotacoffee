@@ -10,8 +10,8 @@ const ProfileLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="bg-gradient">
       <PageHeader
-        title="Profile Saya"
         description="Kelola profil Anda di sini"
+        title="Profile Saya"
       />
 
       <div className="container mx-auto px-4 py-8 max-w-5xl">

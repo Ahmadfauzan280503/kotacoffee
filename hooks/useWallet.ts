@@ -1,12 +1,14 @@
-import walletService from "@/services/wallet.service";
 import { useQuery } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
+
+import walletService from "@/services/wallet.service";
 
 const useWallet = () => {
   const { data: session } = useSession();
 
   const getBalanceService = async () => {
     const res = await walletService.getBalance(session?.user?.token as string);
+
     return res.data;
   };
 

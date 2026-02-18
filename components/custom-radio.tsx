@@ -1,5 +1,6 @@
-import cn from "@/utils/cn";
 import { useRadio, VisuallyHidden } from "@heroui/react";
+
+import cn from "@/utils/cn";
 
 interface ICustomRadio {
   children: React.ReactNode;
@@ -29,7 +30,7 @@ export const CustomRadio = (props: ICustomRadio) => {
       className={cn(
         "group inline-flex items-center hover:opacity-70 active:opacity-50 justify-between flex-row-reverse tap-highlight-transparent",
         "max-w-[300px] cursor-pointer border-2 border-default rounded-lg gap-4 p-4",
-        "data-[selected=true]:border-primary"
+        "data-[selected=true]:border-primary",
       )}
     >
       <VisuallyHidden>

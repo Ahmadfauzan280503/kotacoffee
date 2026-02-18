@@ -1,4 +1,3 @@
-import useProduct from "@/hooks/useProduct";
 import {
   Button,
   Modal,
@@ -8,6 +7,8 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import React, { useEffect } from "react";
+
+import useProduct from "@/hooks/useProduct";
 
 interface PropTypes {
   isOpen: boolean;
@@ -53,11 +54,11 @@ const ModalDelete = ({
                 Batal
               </Button>
               <Button
-                color="success"
                 className="text-white"
-                onPress={() => handleDeleteProduct(selectedProduct)}
-                isLoading={isPendingDeleteProduct}
+                color="success"
                 disabled={isPendingDeleteProduct}
+                isLoading={isPendingDeleteProduct}
+                onPress={() => handleDeleteProduct(selectedProduct)}
               >
                 Hapus
               </Button>

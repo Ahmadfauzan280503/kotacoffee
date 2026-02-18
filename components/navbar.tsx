@@ -2,12 +2,9 @@
 
 import { useState } from "react";
 import NextLink from "next/link";
-import { ThemeSwitch } from "@/components/theme-switch";
 import Image from "next/image";
 import { MdOutlineReceipt, MdOutlineShoppingCart } from "react-icons/md";
-import { siteConfig } from "@/config/site";
 import { clsx } from "clsx";
-
 import {
   Navbar as HeroUINavbar,
   NavbarContent,
@@ -29,10 +26,14 @@ import {
   DropdownSection,
 } from "@heroui/react";
 import { link as linkStyles } from "@heroui/theme";
-import Cart from "./cart";
 import { signOut, useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { FiLogIn, FiLogOut, FiUser } from "react-icons/fi";
+import { FiLogIn, FiLogOut, FiPackage, FiUser } from "react-icons/fi";
+
+import Cart from "./cart";
+
+import { siteConfig } from "@/config/site";
+import { ThemeSwitch } from "@/components/theme-switch";
 import useCart from "@/hooks/useCart";
 import useProfile from "@/hooks/useProfile";
 
@@ -47,25 +48,26 @@ export const Navbar = () => {
 
   return (
     <HeroUINavbar
-      maxWidth="xl"
       isBlurred
-      position="sticky"
       isMenuOpen={isMenuOpen}
+      maxWidth="xl"
+      position="sticky"
       onMenuOpenChange={setIsMenuOpen}
     >
       <NavbarContent justify="start">
         <NavbarBrand as="li" className="gap-3 max-w-fit">
           <NextLink className="flex justify-start items-center gap-2" href="/">
             <Image
-              src="/images/logo-sayur.png"
+              priority
               alt="logo"
-              width={40}
+              className="object-contain"
               height={40}
-              className="w-auto h-auto"
+              src="/images/logo-kotacoffee.png"
+              width={40}
             />
             <div>
-              <p className="font-bold text-inherit">SayurSegar</p>
-              <p className="text-xs text-default-500">Langsung dari petani</p>
+              <p className="font-bold text-inherit">Kotacoffee.id</p>
+              <p className="text-xs text-default-500">Kopi Trotoar</p>
             </div>
           </NextLink>
         </NavbarBrand>
@@ -74,16 +76,12 @@ export const Navbar = () => {
             .filter((item) => {
               if (item.href === "/admin/dashboard") {
                 return (
-                  status === "authenticated" &&
-                  session?.user?.role === "superadmin"
+                  status === "authenticated" && session?.user?.role === "admin"
                 );
               }
 
               if (item.href === "/dashboard") {
-                return (
-                  status === "authenticated" &&
-                  session?.user?.role !== "superadmin"
-                );
+                return false; // Sesuai permintaan, dashboard disembunyikan untuk user biasa
               }
 
               return true;
@@ -93,7 +91,7 @@ export const Navbar = () => {
                 <NextLink
                   className={clsx(
                     linkStyles({ color: "foreground" }),
-                    pathname === item.href && "text-success font-medium"
+                    pathname === item.href && "text-success font-medium",
                   )}
                   color="foreground"
                   href={item.href}
@@ -113,15 +111,15 @@ export const Navbar = () => {
         {status === "authenticated" ? (
           <Dropdown radius="md">
             <Badge
-              isInvisible={dataCarts?.data?._count.items <= 0}
-              content={dataCarts?.data?._count.items}
               className="bg-success text-white"
+              content={dataCarts?.data?._count?.items}
+              isInvisible={(dataCarts?.data?._count?.items ?? 0) <= 0}
             >
               <DropdownTrigger>
                 <Button
                   isIconOnly
-                  variant="light"
                   className="flex items-center p-2 justify-center cursor-pointer text-slate-600 dark:text-slate-200"
+                  variant="light"
                 >
                   <MdOutlineShoppingCart size={22} />
                 </Button>
@@ -148,8 +146,8 @@ export const Navbar = () => {
                   {dataCarts?.data?.items?.length ? (
                     <div>
                       <Button
-                        color="success"
                         className="w-full text-white"
+                        color="success"
                         size="sm"
                         onPress={() => {
                           router.push(`/checkout/${dataUser?.id}`);
@@ -178,7 +176,7 @@ export const Navbar = () => {
                       : `https://ui-avatars.com/api/?name=${session?.user.name}&background=random`,
                   }}
                   className="transition-transform"
-                  description={`@${session?.user.username}`}
+                  description={`@${session?.user?.username || session?.user?.name?.split(" ")[0].toLowerCase() || "user"}`}
                   name={session?.user.name}
                 />
               </DropdownTrigger>
@@ -193,10 +191,22 @@ export const Navbar = () => {
                     Profil
                   </span>
                 </DropdownItem>
-                {session?.user?.role !== "superadmin" ? (
+                {session?.user?.role === "admin" ? (
                   <DropdownItem
-                    showDivider
+                    key="manage-product"
+                    textValue="Kelola Produk"
+                    onPress={() => router.push("/dashboard/product")}
+                  >
+                    <span className="flex items-center gap-2 w-full text-success font-medium">
+                      <FiPackage />
+                      Kelola Produk
+                    </span>
+                  </DropdownItem>
+                ) : null}
+                {session?.user?.role !== "admin" ? (
+                  <DropdownItem
                     key="my-order"
+                    showDivider
                     textValue="Pesanan Saya"
                     onPress={() => router.push("/dashboard/my-order")}
                   >
@@ -209,9 +219,9 @@ export const Navbar = () => {
 
                 <DropdownItem
                   key="logout"
-                  textValue="Keluar"
                   color="danger"
-                  onClick={() => signOut()}
+                  textValue="Keluar"
+                  onPress={() => signOut()}
                 >
                   <span className="flex items-center gap-2 w-full">
                     <FiLogOut />
@@ -222,8 +232,8 @@ export const Navbar = () => {
             </Dropdown>
           ) : (
             <Button
-              color="success"
               className="text-white"
+              color="success"
               onPress={() => router.push("/auth/login")}
             >
               <FiLogIn />
@@ -245,15 +255,15 @@ export const Navbar = () => {
           {status === "authenticated" ? (
             <Dropdown radius="md">
               <Badge
-                isInvisible={dataCarts?.data?._count.items <= 0}
-                content={dataCarts?.data?._count.items}
                 className="bg-success text-white"
+                content={dataCarts?.data?._count?.items}
+                isInvisible={(dataCarts?.data?._count?.items ?? 0) <= 0}
               >
                 <DropdownTrigger>
                   <Button
                     isIconOnly
-                    variant="light"
                     className="flex items-center p-2 justify-center cursor-pointer text-slate-600 dark:text-slate-200"
+                    variant="light"
                   >
                     <MdOutlineShoppingCart size={22} />
                   </Button>
@@ -280,8 +290,8 @@ export const Navbar = () => {
                     {dataCarts?.data?.items?.length ? (
                       <div>
                         <Button
-                          color="success"
                           className="w-full text-white"
+                          color="success"
                           size="sm"
                           onPress={() => {
                             router.push(`/checkout/${dataUser?.id}`);
@@ -297,9 +307,9 @@ export const Navbar = () => {
             </Dropdown>
           ) : (
             <Button
-              size="sm"
-              color="success"
               className="text-white"
+              color="success"
+              size="sm"
               onPress={() => router.push("/auth/login")}
             >
               <FiLogIn />
@@ -321,17 +331,14 @@ export const Navbar = () => {
             .filter((item) => {
               if (item.href === "/admin/dashboard") {
                 return (
-                  status === "authenticated" &&
-                  session?.user?.role === "superadmin"
+                  status === "authenticated" && session?.user?.role === "admin"
                 );
               }
 
               if (item.href === "/dashboard") {
-                return (
-                  status === "authenticated" &&
-                  session?.user?.role !== "superadmin"
-                );
+                return false; // Sesuai permintaan, dashboard disembunyikan untuk user biasa
               }
+
               return true;
             })
             .map((item, index) => (
@@ -340,7 +347,7 @@ export const Navbar = () => {
                   className={clsx(
                     "w-full",
                     linkStyles({ color: "foreground" }),
-                    pathname === item.href && "text-success font-medium"
+                    pathname === item.href && "text-success font-medium",
                   )}
                   href={item.href}
                   onClick={() => setIsMenuOpen(false)}
@@ -380,8 +387,8 @@ export const Navbar = () => {
                 </div>
 
                 <Button
-                  variant="light"
                   className="justify-start"
+                  variant="light"
                   onPress={() => {
                     router.push("/profile");
                     setIsMenuOpen(false);
@@ -392,10 +399,25 @@ export const Navbar = () => {
                     Profil
                   </span>
                 </Button>
-                {session?.user?.role !== "superadmin" ? (
+                {session?.user?.role === "admin" ? (
                   <Button
+                    className="justify-start text-success font-medium"
                     variant="light"
+                    onPress={() => {
+                      router.push("/dashboard/product");
+                      setIsMenuOpen(false);
+                    }}
+                  >
+                    <span className="flex items-center gap-2">
+                      <FiPackage />
+                      Kelola Produk
+                    </span>
+                  </Button>
+                ) : null}
+                {session?.user?.role !== "admin" ? (
+                  <Button
                     className="justify-start"
+                    variant="light"
                     onPress={() => {
                       router.push("/dashboard/my-order");
                       setIsMenuOpen(false);
@@ -409,9 +431,9 @@ export const Navbar = () => {
                 ) : null}
                 <Divider />
                 <Button
-                  variant="light"
-                  color="danger"
                   className="justify-start"
+                  color="danger"
+                  variant="light"
                   onPress={() => {
                     signOut();
                     setIsMenuOpen(false);

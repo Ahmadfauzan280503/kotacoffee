@@ -1,13 +1,15 @@
-import { photoProfileSchema } from "@/schemas/photo-profile.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import useMedia from "./useMedia";
-import { addToast } from "@heroui/react";
+import { addToast } from "@heroui/toast";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import authService from "@/services/auth.service";
 import { useSession } from "next-auth/react";
-import { IUpdatePhoto } from "@/types/auth";
 import { useState } from "react";
+
+import useMedia from "./useMedia";
+
+import { IUpdatePhoto } from "@/types/auth";
+import authService from "@/services/auth.service";
+import { photoProfileSchema } from "@/schemas/photo-profile.schema";
 
 const usePhotoProfile = () => {
   const [visibleForm, setVisibleForm] = useState(false);
@@ -40,7 +42,7 @@ const usePhotoProfile = () => {
 
   const handleUploadImage = (
     files: FileList,
-    onChange: (files: FileList | undefined) => void
+    onChange: (files: FileList | undefined) => void,
   ) => {
     handleUploadFile(files, onChange, (fileUrl) => {
       if (fileUrl) {
@@ -50,7 +52,7 @@ const usePhotoProfile = () => {
   };
 
   const handleDeleteImage = (
-    onChnage: (files: FileList | undefined) => void
+    onChnage: (files: FileList | undefined) => void,
   ) => {
     handleDeleteFile(photoUrl, () => onChnage(undefined));
     setValue("photo", "");
@@ -60,8 +62,9 @@ const usePhotoProfile = () => {
   const updatePhotoService = async (payload: IUpdatePhoto) => {
     const res = await authService.updatePhoto(
       payload,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data.data;
   };
 

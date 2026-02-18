@@ -1,10 +1,11 @@
 "use client";
 
-import useActivation from "@/hooks/useActivation";
 import { Button, Card, CardBody, CardFooter, CardHeader } from "@heroui/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { FiArrowRight, FiCheck } from "react-icons/fi";
+
+import useActivation from "@/hooks/useActivation";
 
 const Activation = () => {
   const params = useSearchParams();
@@ -37,8 +38,8 @@ const Activation = () => {
       <CardFooter>
         <Button
           className="w-full text-white"
-          onPress={() => router.push("/auth/login")}
           color="success"
+          onPress={() => router.push("/auth/login")}
         >
           Masuk ke Akun
           <FiArrowRight className="ml-2 h-4 w-4" />

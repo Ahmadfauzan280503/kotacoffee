@@ -1,11 +1,11 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 
 export default {
   upload: (payload: FormData, token: string) =>
     instance.post(`${endpoint.MEDIA}/upload`, payload, {
       headers: {
-        "Content-Type": "multipart/form-data",
         Authorization: `Bearer ${token}`,
       },
     }),

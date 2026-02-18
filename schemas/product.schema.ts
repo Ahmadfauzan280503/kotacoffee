@@ -11,4 +11,5 @@ export const productSchema = z.object({
   categoryId: z.string().nonempty("Kategori tidak boleh kosong"),
   description: z.string().nonempty("Deskripsi tidak boleh kosong"),
   imageUrl: z.string().nonempty("Foto tidak boleh kosong"),
+  isFeatured: z.boolean().optional(),
 });

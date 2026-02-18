@@ -1,11 +1,12 @@
-import { updateUserSchema } from "@/schemas/update-user.schema";
-import authService from "@/services/auth.service";
-import { IUpdateUser } from "@/types/auth";
 import { addToast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
+
+import { IUpdateUser } from "@/types/auth";
+import authService from "@/services/auth.service";
+import { updateUserSchema } from "@/schemas/update-user.schema";
 
 const useProfile = () => {
   const { data: session, update } = useSession();
@@ -32,6 +33,7 @@ const useProfile = () => {
   // get user by id
   const getUserByIdService = async () => {
     const res = await authService.getUserById(session?.user?.token as string);
+
     return res.data.data;
   };
 
@@ -49,8 +51,9 @@ const useProfile = () => {
   const updateUserService = async (payload: IUpdateUser) => {
     const res = await authService.updateUser(
       payload,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data.data;
   };
 

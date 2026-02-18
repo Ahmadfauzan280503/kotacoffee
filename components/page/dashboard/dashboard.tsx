@@ -1,11 +1,5 @@
 "use client";
 
-import useChangeUrl from "@/hooks/useChangeUrl";
-import useOrder from "@/hooks/useOrder";
-import useProfile from "@/hooks/useProfile";
-import useSeller from "@/hooks/useSeller";
-import { TProductResponse } from "@/types/product";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import {
   Button,
   Card,
@@ -29,6 +23,13 @@ import {
 } from "react-icons/fi";
 import { MdAttachMoney } from "react-icons/md";
 
+import useChangeUrl from "@/hooks/useChangeUrl";
+import useOrder from "@/hooks/useOrder";
+import useProfile from "@/hooks/useProfile";
+import useSeller from "@/hooks/useSeller";
+import { TProductResponse } from "@/types/product";
+import { rupiahFormat } from "@/utils/rupiahFormat";
+
 const Dashboard = () => {
   const { dataUser } = useProfile();
   const { dataSeller, isLoadingSeller } = useSeller();
@@ -37,7 +38,7 @@ const Dashboard = () => {
 
   const router = useRouter();
   const isSellerVerified =
-    dataUser?.Seller[0]?.verified && dataUser?.Seller?.length;
+    dataUser?.Seller?.[0]?.verified && dataUser?.Seller?.length;
 
   useEffect(() => {
     setUrl();
@@ -69,7 +70,7 @@ const Dashboard = () => {
               <CardBody>
                 <div className="flex items-center justify-center lg:justify-between flex-col-reverse lg:flex-row gap-2 lg:gap-0">
                   <p className="text-2xl font-bold text-gray-900 mt-1 text-center lg:text-start dark:text-white">
-                    {rupiahFormat(dataUser?.Seller[0]?.wallet?.balance)}
+                    {rupiahFormat(dataUser?.Seller?.[0]?.wallet?.balance)}
                   </p>
                   <div
                     className={`w-12 h-12 bg-success rounded-lg flex items-center justify-center`}
@@ -128,8 +129,8 @@ const Dashboard = () => {
                   Pesanan Terbaru
                 </h3>
                 <Button
-                  variant="light"
                   color="success"
+                  variant="light"
                   onPress={() => router.push("/dashboard/order")}
                 >
                   Lihat Semua
@@ -140,14 +141,14 @@ const Dashboard = () => {
                   Array.from({ length: 3 }).map((_, index) => (
                     <Skeleton
                       key={index}
-                      isLoaded={false}
                       className="mb-2 h-12 w-full rounded-md"
+                      isLoaded={false}
                     />
                   ))}
                 {dataOrderSeller?.data?.orders
                   ?.filter((order: any) => order?.status !== "COMPLETED")
                   ?.map((order: any) => (
-                    <div className="space-y-3" key={order?.id}>
+                    <div key={order?.id} className="space-y-3">
                       <div className="flex items-center justify-between py-2">
                         <div className="flex items-center space-x-3 dark:text-white">
                           <div>
@@ -164,6 +165,22 @@ const Dashboard = () => {
                             {rupiahFormat(order?.totalPrice)}
                           </p>
                           <Chip
+                            color={
+                              order?.status === "PENDING"
+                                ? "warning"
+                                : order?.status === "PAID"
+                                  ? "success"
+                                  : order?.status === "FAILED"
+                                    ? "danger"
+                                    : order?.status == "PROCESSING"
+                                      ? "secondary"
+                                      : order?.status == "DELIVERED"
+                                        ? "primary"
+                                        : order?.status === "COMPLETED"
+                                          ? "default"
+                                          : "danger"
+                            }
+                            size="sm"
                             startContent={
                               order?.status === "PENDING" ? (
                                 <FiClock />
@@ -180,22 +197,6 @@ const Dashboard = () => {
                               ) : null
                             }
                             variant="bordered"
-                            size="sm"
-                            color={
-                              order?.status === "PENDING"
-                                ? "warning"
-                                : order?.status === "PAID"
-                                  ? "success"
-                                  : order?.status === "FAILED"
-                                    ? "danger"
-                                    : order?.status == "PROCESSING"
-                                      ? "secondary"
-                                      : order?.status == "DELIVERED"
-                                        ? "primary"
-                                        : order?.status === "COMPLETED"
-                                          ? "default"
-                                          : "danger"
-                            }
                           >
                             {order?.status === "PENDING" && "Pending"}
                             {order?.status === "PAID" && "Dibayar"}
@@ -210,7 +211,7 @@ const Dashboard = () => {
                   ))}
 
                 {dataOrderSeller?.data.orders?.filter(
-                  (order: any) => order?.status !== "COMPLETED"
+                  (order: any) => order?.status !== "COMPLETED",
                 )?.length === 0 && (
                   <p className="text-center text-gray-500 dark:text-gray-400">
                     Tidak ada pesanan
@@ -232,23 +233,29 @@ const Dashboard = () => {
                   Array.from({ length: 3 }).map((_, index) => (
                     <Skeleton
                       key={index}
-                      isLoaded={false}
                       className="mb-2 h-12 w-full rounded-md"
+                      isLoaded={false}
                     />
                   ))}
                 {dataSeller?.seller?.products
                   ?.filter((product: TProductResponse) => product?.stock < 20)
                   ?.map((product: TProductResponse) => (
-                    <div className="space-y-3" key={product?.id}>
+                    <div key={product?.id} className="space-y-3">
                       <div className="flex items-center justify-between py-2">
                         <div className="flex items-center space-x-3 dark:text-white">
-                          <Image
-                            src={product?.imageUrl as string}
-                            alt="product"
-                            width={50}
-                            height={50}
-                            className="object-contain aspect-square rounded-md"
-                          />
+                          {product?.imageUrl ? (
+                            <Image
+                              alt="product"
+                              className="object-contain aspect-square rounded-md"
+                              height={50}
+                              src={product?.imageUrl as string}
+                              width={50}
+                            />
+                          ) : (
+                            <div className="w-[50px] h-[50px] bg-gray-200 rounded-md flex items-center justify-center text-[10px] text-gray-500">
+                              No Img
+                            </div>
+                          )}
                           <div>
                             <p className="font-medium text-gray-900 dark:text-white w-56 truncate">
                               {product?.name}
@@ -268,7 +275,7 @@ const Dashboard = () => {
                   ))}
 
                 {dataSeller?.seller?.products?.filter(
-                  (product: TProductResponse) => product?.stock < 20
+                  (product: TProductResponse) => product?.stock < 20,
                 ).length === 0 && (
                   <p className="text-center text-gray-500 dark:text-gray-400">
                     Semua produk memiliki stok yang cukup

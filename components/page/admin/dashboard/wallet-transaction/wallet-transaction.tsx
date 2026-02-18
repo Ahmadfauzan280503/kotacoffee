@@ -1,16 +1,18 @@
 "use client";
 
-import DataTable from "@/components/data-table";
-import { formatDate } from "@/utils/dateFormat";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import { Button, Chip, Tooltip, useDisclosure } from "@heroui/react";
 import { Key, useCallback, useEffect, useState } from "react";
 import { FiEye, FiTrash } from "react-icons/fi";
-import { columns } from "./columns";
-import useWalletTransaction from "@/hooks/useWalletTransaction";
 import { BsBank, BsCheckCircle, BsClock } from "react-icons/bs";
+
+import { columns } from "./columns";
 import ModalDetail from "./modal-detail";
 import ModalDelete from "./modal-delete";
+
+import useWalletTransaction from "@/hooks/useWalletTransaction";
+import { rupiahFormat } from "@/utils/rupiahFormat";
+import { formatDate } from "@/utils/dateFormat";
+import DataTable from "@/components/data-table";
 import useChangeUrl from "@/hooks/useChangeUrl";
 
 const WalletTransaction = () => {
@@ -79,13 +81,13 @@ const WalletTransaction = () => {
         case "status":
           return (
             <Chip
-              size="sm"
-              color={cellValue === "pending" ? "warning" : "success"}
-              variant="bordered"
               className="flex items-center gap-1"
+              color={cellValue === "pending" ? "warning" : "success"}
+              size="sm"
               startContent={
                 cellValue === "pending" ? <BsClock /> : <BsCheckCircle />
               }
+              variant="bordered"
             >
               {cellValue}
             </Chip>
@@ -98,10 +100,10 @@ const WalletTransaction = () => {
               <Tooltip color="primary" content="Ubah produk">
                 <Button
                   isIconOnly
+                  className="cursor-pointer active:opacity-50"
+                  color="primary"
                   size="sm"
                   variant="light"
-                  color="primary"
-                  className="cursor-pointer active:opacity-50"
                   onPress={() => {
                     onOpenDetail();
                     setSelectedId(walletTransaction.id);
@@ -113,10 +115,10 @@ const WalletTransaction = () => {
               <Tooltip color="danger" content="Hapus produk">
                 <Button
                   isIconOnly
+                  className="cursor-pointer active:opacity-50"
+                  color="danger"
                   size="sm"
                   variant="light"
-                  color="danger"
-                  className="cursor-pointer active:opacity-50"
                   onPress={() => {
                     onOpenDelete();
                     setSelectedWalletTransaction(walletTransaction?.id);
@@ -131,34 +133,34 @@ const WalletTransaction = () => {
           return cellValue;
       }
     },
-    []
+    [],
   );
 
   return (
     <>
       <ModalDelete
         isOpen={isOpenDelete}
-        onClose={onCloseDelete}
-        onOpenChange={onOpenChangeDelete}
         selectedWalletTransaction={selectedWalletTransaction}
         setSelectedWalletTransaction={setSelectedWalletTransaction}
+        onClose={onCloseDelete}
+        onOpenChange={onOpenChangeDelete}
       />
 
       <ModalDetail
         isOpen={isOpenDetail}
-        onClose={onCloseDetail}
         walletTransaction={dataWalletTransactionById?.data}
+        onClose={onCloseDetail}
       />
       <DataTable
         columns={columns}
+        currentPage={dataAllWalletTransactions?.data?.currentPage}
+        data={dataAllWalletTransactions?.data?.walletTransaction || []}
+        description="Kelola transaksi wallet"
+        emptyContent="Tidak ada transaksi wallet"
+        isLoading={isLoadingDataAllWalletTransaction}
         renderCell={renderCell}
         title="Transaksi Wallet"
-        description="Kelola transaksi wallet"
-        data={dataAllWalletTransactions?.data?.walletTransaction || []}
-        isLoading={isLoadingDataAllWalletTransaction}
         totalPage={dataAllWalletTransactions?.data?.totalPage}
-        currentPage={dataAllWalletTransactions?.data?.currentPage}
-        emptyContent="Tidak ada transaksi wallet"
       />
     </>
   );

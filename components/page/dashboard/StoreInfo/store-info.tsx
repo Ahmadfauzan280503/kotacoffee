@@ -1,7 +1,5 @@
 "use client";
 
-import ModalConfirmBeseller from "@/components/modal-confirm-beseller";
-import useProfile from "@/hooks/useProfile";
 import { Button } from "@heroui/button";
 import { Alert, Card, CardBody, Spinner, useDisclosure } from "@heroui/react";
 import Link from "next/link";
@@ -15,16 +13,19 @@ import {
 } from "react-icons/fi";
 import { MdOutlineDescription, MdVerified } from "react-icons/md";
 
+import useProfile from "@/hooks/useProfile";
+import ModalConfirmBeseller from "@/components/modal-confirm-beseller";
+
 const StoreInfo = () => {
   const { dataUser, isLoadingUser } = useProfile();
   const { onOpenChange, isOpen } = useDisclosure();
   const isSellerVerified =
-    dataUser?.Seller[0]?.verified && dataUser?.Seller?.length;
+    dataUser?.Seller?.[0]?.verified && dataUser?.Seller?.length;
 
   if (isLoadingUser)
     return (
       <div className="flex items-center justify-center h-[250px]">
-        <Spinner size="lg" color="success" />
+        <Spinner color="success" size="lg" />
       </div>
     );
 
@@ -33,9 +34,8 @@ const StoreInfo = () => {
       <div className="flexjustify-center h-[250px]">
         <ModalConfirmBeseller isOpen={isOpen} onOpenChange={onOpenChange} />
         <Alert
-          title="Informasi"
-          description="Kamu belum memiliki lapak atau belum terverifikasi, silahkan buat lapak terlebih dahulu dan tunggu verifikasi"
           color="warning"
+          description="Kamu belum memiliki lapak atau belum terverifikasi, silahkan buat lapak terlebih dahulu dan tunggu verifikasi"
           endContent={
             <Button
               color="success"
@@ -45,6 +45,7 @@ const StoreInfo = () => {
               Buat Lapak
             </Button>
           }
+          title="Informasi"
         />
       </div>
     );
@@ -61,10 +62,10 @@ const StoreInfo = () => {
           </div>
           <div>
             <Button
-              color="success"
-              className="text-white"
               as={Link}
-              href={`/dashboard/store-info/edit/${dataUser?.Seller[0]?.id}`}
+              className="text-white"
+              color="success"
+              href={`/dashboard/store-info/edit/${dataUser?.Seller?.[0]?.id}`}
             >
               <FiEdit />
               Edit Info
@@ -73,9 +74,9 @@ const StoreInfo = () => {
         </div>
       ) : (
         <Alert
-          title="Informasi"
-          description="Lapak kamu belum terfertifikasi, silahkan tunggu!"
           color="warning"
+          description="Lapak kamu belum terfertifikasi, silahkan tunggu!"
+          title="Informasi"
         />
       )}
       <Card>
@@ -91,8 +92,8 @@ const StoreInfo = () => {
               <div>
                 <h2 className="text-lg font-semibold">
                   <span className="flex items-center gap-1 dark:text-white">
-                    {dataUser?.Seller[0]?.storeName}{" "}
-                    {dataUser?.Seller[0]?.verified && (
+                    {dataUser?.Seller?.[0]?.storeName}{" "}
+                    {dataUser?.Seller?.[0]?.verified && (
                       <MdVerified className="text-primary" />
                     )}
                   </span>
@@ -111,7 +112,7 @@ const StoreInfo = () => {
                   Lokasi
                 </p>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
-                  {dataUser?.Seller[0]?.storeLocation}
+                  {dataUser?.Seller?.[0]?.storeLocation}
                 </p>
               </div>
             </div>
@@ -128,12 +129,12 @@ const StoreInfo = () => {
               </div>
               <Button
                 isIconOnly
-                variant="bordered"
-                color="primary"
-                size="sm"
                 as={Link}
-                href="/profile"
                 className="ml-auto"
+                color="primary"
+                href="/profile"
+                size="sm"
+                variant="bordered"
               >
                 <FiEdit />
               </Button>
@@ -165,7 +166,7 @@ const StoreInfo = () => {
                     Bank:
                   </span>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
-                    {dataUser?.Seller[0]?.bankName.toUpperCase()}
+                    {dataUser?.Seller?.[0]?.bankName?.toUpperCase()}
                   </span>
                 </div>
                 <div className="flex justify-between">
@@ -173,7 +174,7 @@ const StoreInfo = () => {
                     No. Rekening:
                   </span>
                   <span className="text-sm font-medium text-gray-900 dark:text-white">
-                    {dataUser?.Seller[0]?.accountNumber}
+                    {dataUser?.Seller?.[0]?.accountNumber}
                   </span>
                 </div>
               </div>
@@ -188,7 +189,7 @@ const StoreInfo = () => {
                 </h4>
               </div>
               <p className="text-sm text-gray-600 dark:text-gray-400 leading-relaxed">
-                {dataUser?.Seller[0]?.description}
+                {dataUser?.Seller?.[0]?.description}
               </p>
             </div>
           </div>

@@ -1,4 +1,3 @@
-import useWalletTransaction from "@/hooks/useWalletTransaction";
 import {
   Button,
   Modal,
@@ -8,6 +7,8 @@ import {
   ModalHeader,
 } from "@heroui/react";
 import React, { useEffect } from "react";
+
+import useWalletTransaction from "@/hooks/useWalletTransaction";
 
 interface PropTypes {
   isOpen: boolean;
@@ -53,13 +54,13 @@ const ModalDelete = ({
                 Batal
               </Button>
               <Button
-                color="success"
                 className="text-white"
+                color="success"
+                disabled={isPendingDeleteWalletTransaction}
+                isLoading={isPendingDeleteWalletTransaction}
                 onPress={() =>
                   mutateDeleteWalletTransaction(selectedWalletTransaction)
                 }
-                isLoading={isPendingDeleteWalletTransaction}
-                disabled={isPendingDeleteWalletTransaction}
               >
                 Hapus
               </Button>

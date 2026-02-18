@@ -15,6 +15,7 @@ const ScrollToTop = () => {
     };
 
     window.addEventListener("scroll", toggleVisibility);
+
     return () => window.removeEventListener("scroll", toggleVisibility);
   }, []);
 
@@ -29,12 +30,12 @@ const ScrollToTop = () => {
 
   return (
     <Button
-      onPress={scrollToTop}
-      className="fixed bottom-8 right-8 z-50 text-white"
       isIconOnly
       aria-label="Scroll to top"
+      className="fixed bottom-8 right-8 z-50 text-white"
       color="success"
       variant="shadow"
+      onPress={scrollToTop}
     >
       <FiChevronUp className="h-4 w-4" />
     </Button>

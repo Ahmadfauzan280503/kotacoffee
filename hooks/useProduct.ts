@@ -1,14 +1,16 @@
-import { productSchema } from "@/schemas/product.schema";
-import productService from "@/services/product.service";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useForm } from "react-hook-form";
-import useMedia from "./useMedia";
 import { addToast } from "@heroui/react";
 import { useParams, useRouter } from "next/navigation";
-import { TProductInput } from "@/types/product";
+
+import useMedia from "./useMedia";
 import useChangeUrl from "./useChangeUrl";
+
+import { TProductInput } from "@/types/product";
+import productService from "@/services/product.service";
+import { productSchema } from "@/schemas/product.schema";
 
 const useProduct = () => {
   const router = useRouter();
@@ -44,6 +46,7 @@ const useProduct = () => {
       categoryId: "",
       description: "",
       imageUrl: "",
+      isFeatured: false,
     },
   });
   const preview = watch("imageUrl");
@@ -52,7 +55,7 @@ const useProduct = () => {
   // upload image
   const handleUploadImage = (
     files: FileList,
-    onChange: (files: FileList | undefined) => void
+    onChange: (files: FileList | undefined) => void,
   ) => {
     handleUploadFile(files, onChange, (fileUrl) => {
       if (fileUrl) {
@@ -63,7 +66,7 @@ const useProduct = () => {
 
   // delete image
   const handleDeleteImage = (
-    onChnage: (files: FileList | undefined) => void
+    onChnage: (files: FileList | undefined) => void,
   ) => {
     handleDeleteFile(imageUrl, () => onChnage(undefined));
     setValue("imageUrl", "");
@@ -73,8 +76,9 @@ const useProduct = () => {
   const createProductService = async (payload: TProductInput) => {
     const res = await productService.create(
       payload,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 
@@ -90,11 +94,13 @@ const useProduct = () => {
         reset();
         router.push("/dashboard/product");
       },
-      onError: (error) => {
-        console.log(error);
+      onError: (error: any) => {
+        console.error("Create Product Error:", error);
+        const errorMessage =
+          error.response?.data?.message || "Produk gagal dibuat";
         addToast({
           title: "Gagal",
-          description: "Produk gagal dibuat",
+          description: errorMessage,
           color: "danger",
         });
       },
@@ -105,15 +111,18 @@ const useProduct = () => {
       ...data,
       price: Number(data.price),
       stock: Number(data.stock),
+      isFeatured: Boolean(data.isFeatured),
     });
 
   // get products
   const getProductsService = async () => {
     let params = `category=${category}&search=${search}&page=${page}&limit=${limit}`;
+
     if (!category && !search && !page && !limit) {
       params = "";
     }
     const res = await productService.getProducts(params);
+
     return res.data;
   };
 
@@ -129,6 +138,7 @@ const useProduct = () => {
   // get featured products
   const getFeaturedProductsService = async () => {
     const res = await productService.getFeaturedProducts();
+
     return res.data;
   };
 
@@ -136,11 +146,13 @@ const useProduct = () => {
     useQuery({
       queryKey: ["featured-products"],
       queryFn: getFeaturedProductsService,
+      staleTime: 5 * 60 * 1000, // 5 minutes — featured products rarely change
     });
 
   // get product by id
   const getProductByIdService = async (id: string) => {
     const res = await productService.getProductById(id);
+
     return res.data;
   };
 
@@ -149,8 +161,9 @@ const useProduct = () => {
     const res = await productService.update(
       id,
       payload,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 
@@ -167,11 +180,13 @@ const useProduct = () => {
         reset();
         router.push("/dashboard/product");
       },
-      onError: (error) => {
-        console.log(error);
+      onError: (error: any) => {
+        console.error("Update Product Error:", error);
+        const errorMessage =
+          error.response?.data?.message || "Produk gagal diubah";
         addToast({
           title: "Gagal",
-          description: "Produk gagal diubah",
+          description: errorMessage,
           color: "danger",
         });
       },
@@ -184,6 +199,7 @@ const useProduct = () => {
         ...data,
         price: Number(data.price),
         stock: Number(data.stock),
+        isFeatured: Boolean(data.isFeatured),
       },
     });
 
@@ -192,6 +208,7 @@ const useProduct = () => {
   // delete
   const deleteProductService = async (id: string) => {
     const res = await productService.destroy(id, session?.user.token as string);
+
     return res.data;
   };
 
@@ -228,8 +245,9 @@ const useProduct = () => {
   const adminDeleteProductService = async (id: string) => {
     const res = await productService.adminDelete(
       id,
-      session?.user.token as string
+      session?.user.token as string,
     );
+
     return res.data;
   };
 

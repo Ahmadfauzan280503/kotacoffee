@@ -5,8 +5,8 @@ const SellerPage = () => {
   return (
     <div className="bg-gradient-to-br from-emerald-50 via-white to-emerald-50">
       <PageHeader
-        title="Jadi Penjual"
         description="Lengkapi informasi toko Anda di sini"
+        title="Jadi Penjual"
       />
       <div className="w-full max-w-xl mx-auto py-4">
         <Seller />

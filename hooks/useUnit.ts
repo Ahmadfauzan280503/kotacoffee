@@ -1,6 +1,3 @@
-import { unitSchema } from "@/schemas/unit.schema";
-import unitService from "@/services/unit.service";
-import { IUnit } from "@/types/unit";
 import { addToast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -8,7 +5,12 @@ import { useSession } from "next-auth/react";
 import { useParams } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
+
 import useChangeUrl from "./useChangeUrl";
+
+import { IUnit } from "@/types/unit";
+import unitService from "@/services/unit.service";
+import { unitSchema } from "@/schemas/unit.schema";
 
 const useUnit = () => {
   const router = useRouter();
@@ -20,10 +22,12 @@ const useUnit = () => {
   // get units
   const getUnitsService = async () => {
     let params = `search=${search}`;
+
     if (!search) {
       params = "";
     }
     const res = await unitService.getUnits(params);
+
     return res.data;
   };
 
@@ -51,8 +55,9 @@ const useUnit = () => {
   const createUnitService = async (payload: IUnit) => {
     const res = await unitService.createUnit(
       payload,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -87,8 +92,9 @@ const useUnit = () => {
     const res = await unitService.updateUnit(
       payload,
       id as string,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -122,8 +128,9 @@ const useUnit = () => {
   const deleteUnitService = async (id: string) => {
     const res = await unitService.deleteUnit(
       id,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data;
   };
 
@@ -177,4 +184,5 @@ const useUnit = () => {
     isSuccessDeleteUnit,
   };
 };
+
 export default useUnit;

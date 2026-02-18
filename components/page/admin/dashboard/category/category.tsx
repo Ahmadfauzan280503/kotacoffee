@@ -1,16 +1,18 @@
 "use client";
 
-import DataTable from "@/components/data-table";
-import useCategory from "@/hooks/useCateogry";
 import React, { Key, useCallback, useEffect, useState } from "react";
-import { columns } from "./columns";
 import Image from "next/image";
 import { Button, Tooltip } from "@heroui/react";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useDisclosure } from "@heroui/react";
+
+import { columns } from "./columns";
 import ModalDelete from "./modal-delete";
+
+import useCategory from "@/hooks/useCategory";
+import DataTable from "@/components/data-table";
 import { formatDate } from "@/utils/dateFormat";
 import useChangeUrl from "@/hooks/useChangeUrl";
 
@@ -33,13 +35,19 @@ const Category = () => {
         case "category":
           return (
             <div className="flex items-center gap-2">
-              <Image
-                src={category?.imageUrl as string}
-                alt={category?.name as string}
-                width={50}
-                height={50}
-                className="object-contain aspect-square rounded-md"
-              />
+              {category?.imageUrl ? (
+                <Image
+                  alt={category?.name as string}
+                  className="object-contain aspect-square rounded-md"
+                  height={50}
+                  src={category?.imageUrl as string}
+                  width={50}
+                />
+              ) : (
+                <div className="w-[50px] h-[50px] bg-gray-200 rounded-md flex items-center justify-center text-[10px] text-gray-500">
+                  No Img
+                </div>
+              )}
               <p className="font-medium">{category?.name as string}</p>
             </div>
           );
@@ -53,10 +61,10 @@ const Category = () => {
           return (
             <div className="text-center">
               <p className="font-medium">
-                {(category?.user as { name: string })?.name}
+                {(category?.user as { name: string })?.name || "-"}
               </p>
               <p className="text-sm text-foreground-500">
-                {(category?.user as { role: string }).role}
+                {(category?.user as { role: string })?.role || "-"}
               </p>
             </div>
           );
@@ -66,11 +74,11 @@ const Category = () => {
               <Tooltip color="primary" content="Ubah produk">
                 <Button
                   isIconOnly
-                  variant="light"
-                  color="primary"
-                  className="text-lg cursor-pointer active:opacity-50"
                   as={Link}
+                  className="text-lg cursor-pointer active:opacity-50"
+                  color="primary"
                   href={`/admin/dashboard/category/edit/${category.id}`}
+                  variant="light"
                 >
                   <FiEdit />
                 </Button>
@@ -78,9 +86,9 @@ const Category = () => {
               <Tooltip color="danger" content="Hapus produk">
                 <Button
                   isIconOnly
-                  variant="light"
-                  color="danger"
                   className="text-lg cursor-pointer active:opacity-50"
+                  color="danger"
+                  variant="light"
                   onPress={() => {
                     setSelectedCategory(category.id as string);
                     onOpen();
@@ -95,31 +103,31 @@ const Category = () => {
           return cellValue;
       }
     },
-    []
+    [],
   );
 
   return (
     <>
       <ModalDelete
         isOpen={isOpen}
-        onClose={onClose}
-        onOpenChange={onOpenChange}
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}
+        onClose={onClose}
+        onOpenChange={onOpenChange}
       />
       <DataTable
-        title="Kategori"
-        description="Kelola kategori"
-        columns={columns}
-        data={dataCategoriesAdmin?.categories || []}
-        renderCell={renderCell as any}
         addButton
         addButtonText="Tambah Kategori"
-        onPressAddButton={() => router.push("/admin/dashboard/category/create")}
+        columns={columns}
+        currentPage={dataCategoriesAdmin?.pagination?.page}
+        data={dataCategoriesAdmin?.categories || []}
+        description="Kelola kategori"
         emptyContent="Belum ada kategori yang ditambahkan"
         isLoading={isLoadingCategoriesAdmin}
-        currentPage={dataCategoriesAdmin?.currentPage}
-        totalPage={dataCategoriesAdmin?.totalPage}
+        renderCell={renderCell as any}
+        title="Kategori"
+        totalPage={dataCategoriesAdmin?.pagination?.totalPages}
+        onPressAddButton={() => router.push("/admin/dashboard/category/create")}
       />
     </>
   );

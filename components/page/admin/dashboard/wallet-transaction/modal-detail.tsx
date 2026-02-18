@@ -1,8 +1,5 @@
 "use client";
 
-import { IWalletTransaction } from "@/types/wallet-transaction";
-import { formatDate } from "@/utils/dateFormat";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import {
   Button,
   Card,
@@ -20,6 +17,10 @@ import { FaCreditCard } from "react-icons/fa";
 import { FiUser } from "react-icons/fi";
 import { LuCircleCheck } from "react-icons/lu";
 import { useEffect } from "react";
+
+import { rupiahFormat } from "@/utils/rupiahFormat";
+import { formatDate } from "@/utils/dateFormat";
+import { IWalletTransaction } from "@/types/wallet-transaction";
 import useTransfer from "@/hooks/useTransfer";
 import ButtonWhatsapp from "@/components/button-whatsapp";
 
@@ -68,8 +69,8 @@ const ModalDetail = ({
     children: React.ReactNode;
   }) => (
     <Card
-      shadow="sm"
       className="border border-gray-200 dark:border-gray-700 rounded-xl"
+      shadow="sm"
     >
       <CardBody className="p-4 space-y-4">
         <div className="flex items-center gap-3">
@@ -87,11 +88,11 @@ const ModalDetail = ({
   return (
     <>
       <Modal
+        backdrop="blur"
         isOpen={isOpen}
+        scrollBehavior="outside"
         size="2xl"
         onClose={onClose}
-        scrollBehavior="outside"
-        backdrop="blur"
       >
         <ModalContent>
           {(onClose) => (
@@ -133,13 +134,13 @@ const ModalDetail = ({
                     label="Status"
                     value={
                       <Chip
-                        size="sm"
+                        className="text-white"
                         color={
                           walletTransaction?.status === "success"
                             ? "success"
                             : "warning"
                         }
-                        className="text-white"
+                        size="sm"
                       >
                         {walletTransaction?.status}
                       </Chip>
@@ -180,23 +181,23 @@ const ModalDetail = ({
                   <div className="flex flex-wrap items-center gap-2">
                     {walletTransaction?.status === "success" ? (
                       <Chip
-                        size="sm"
-                        color="primary"
-                        variant="bordered"
                         className="flex items-center gap-1"
+                        color="primary"
+                        size="sm"
                         startContent={<LuCircleCheck className="h-4 w-4" />}
+                        variant="bordered"
                       >
                         Success
                       </Chip>
                     ) : (
                       <div className="flex w-full gap-2">
                         <Button
-                          variant="shadow"
-                          size="sm"
                           color="primary"
-                          startContent={isPendingTransfer ? null : <BsSend />}
-                          isLoading={isPendingTransfer}
                           disabled={isPendingTransfer}
+                          isLoading={isPendingTransfer}
+                          size="sm"
+                          startContent={isPendingTransfer ? null : <BsSend />}
+                          variant="shadow"
                           onPress={() => {
                             handelTransfer({
                               amount: walletTransaction?.amount as number,
@@ -213,13 +214,13 @@ const ModalDetail = ({
                         </Button>
 
                         <ButtonWhatsapp
-                          variant="shadow"
-                          size="sm"
+                          message={`Halo ${walletTransaction?.wallet?.seller?.user?.name}, Mohon maaf, saat ini kami belum bisa transfer ke rekening ${walletTransaction?.wallet?.seller?.bankName.toUpperCase()} - ${walletTransaction?.wallet?.seller?.accountNumber} atas nama ${walletTransaction?.wallet?.seller?.accountName.toUpperCase()}. Pastikan rekening yang anda masukkan benar.`}
                           phone={
                             walletTransaction?.wallet?.seller?.user
                               ?.phone as string
                           }
-                          message={`Halo ${walletTransaction?.wallet?.seller?.user?.name}, Mohon maaf, saat ini kami belum bisa transfer ke rekening ${walletTransaction?.wallet?.seller?.bankName.toUpperCase()} - ${walletTransaction?.wallet?.seller?.accountNumber} atas nama ${walletTransaction?.wallet?.seller?.accountName.toUpperCase()}. Pastikan rekening yang anda masukkan benar.`}
+                          size="sm"
+                          variant="shadow"
                         />
                       </div>
                     )}

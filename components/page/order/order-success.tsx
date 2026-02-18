@@ -37,8 +37,8 @@ const OrderSuccess = () => {
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-8">
             <Button
               color="success"
-              variant="bordered"
               startContent={<FaExternalLinkAlt className="h-4 w-4" />}
+              variant="bordered"
               onPress={() => router.push("/dashboard/my-order")}
             >
               Lihat Pesanan

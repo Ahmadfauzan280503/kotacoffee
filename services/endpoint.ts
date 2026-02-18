@@ -11,4 +11,5 @@ export default {
   TRANSFER: "/transfer",
   UNIT: "/unit",
   USER: "/users",
+  PAYMENT: "/payment",
 };

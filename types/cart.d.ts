@@ -12,6 +12,7 @@ export type TCartItem = {
   product: {
     imageUrl: string;
     name: string;
+    price: number;
     seller: {
       id?: string;
       storeLocation: string;

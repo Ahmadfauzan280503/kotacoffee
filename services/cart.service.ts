@@ -1,5 +1,6 @@
-import instance from "@/lib/axios";
 import endpoint from "./endpoint";
+
+import instance from "@/lib/axios";
 import { TCart } from "@/types/cart";
 
 export default {
@@ -32,7 +33,7 @@ export default {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     ),
   decreaseQuantity: (itemId: string, token: string) =>
     instance.put(
@@ -42,6 +43,6 @@ export default {
         headers: {
           Authorization: `Bearer ${token}`,
         },
-      }
+      },
     ),
 };

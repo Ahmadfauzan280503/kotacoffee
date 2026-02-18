@@ -1,12 +1,13 @@
-import { changePasswordSchema } from "@/schemas/change-password.schema";
-import authService from "@/services/auth.service";
-import { TChangePassword } from "@/types/auth";
 import { addToast } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+
+import { TChangePassword } from "@/types/auth";
+import authService from "@/services/auth.service";
+import { changePasswordSchema } from "@/schemas/change-password.schema";
 
 const useChangePassword = () => {
   const [isVisibleOldPassword, setIsVisibleOldPassword] = useState(false);
@@ -33,8 +34,9 @@ const useChangePassword = () => {
   const changePasswordService = async (payload: TChangePassword) => {
     const res = await authService.changePassword(
       payload,
-      session?.user?.token as string
+      session?.user?.token as string,
     );
+
     return res.data.data;
   };
 

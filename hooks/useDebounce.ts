@@ -13,7 +13,7 @@ const useDebounce = () => {
         }, delay);
       };
     },
-    []
+    [],
   );
 
   return { debounce };

@@ -1,10 +1,5 @@
 "use client";
 
-import useProfile from "@/hooks/useProfile";
-import useWalletTransaction from "@/hooks/useWalletTransaction";
-import { IWalletTransaction } from "@/types/wallet-transaction";
-import { formatDate } from "@/utils/dateFormat";
-import { rupiahFormat } from "@/utils/rupiahFormat";
 import {
   Button,
   Card,
@@ -20,11 +15,18 @@ import {
   BsClock,
 } from "react-icons/bs";
 import { LuWallet } from "react-icons/lu";
+
 import ModalTransactionWallet from "./modal-transaction-wallet";
+
+import useProfile from "@/hooks/useProfile";
+import useWalletTransaction from "@/hooks/useWalletTransaction";
+import { IWalletTransaction } from "@/types/wallet-transaction";
+import { formatDate } from "@/utils/dateFormat";
+import { rupiahFormat } from "@/utils/rupiahFormat";
 
 const Wallet = () => {
   const { dataUser, isLoadingUser } = useProfile();
-  const seller = dataUser?.Seller[0];
+  const seller = dataUser?.Seller?.[0];
   const { dataWalletTransactions, isLoadingWalletTransactions } =
     useWalletTransaction();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -41,8 +43,8 @@ const Wallet = () => {
       {/* Wallet Balance Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <Card
-          shadow="sm"
           className="bg-gradient-to-r from-green-500 to-green-600 p-4 text-white"
+          shadow="sm"
         >
           <CardBody>
             <div className="flex items-center justify-between">
@@ -51,8 +53,8 @@ const Wallet = () => {
                   Saldo Tersedia
                 </p>
                 <Skeleton
-                  isLoaded={!isLoadingUser}
                   className="rounded-md bg-success"
+                  isLoaded={!isLoadingUser}
                 >
                   <p className="text-2xl font-bold">
                     {rupiahFormat(seller?.wallet?.balance)}
@@ -74,10 +76,10 @@ const Wallet = () => {
         </h3>
         {seller?.wallet?.balance > 0 ? (
           <Button
-            onPress={() => onOpen()}
-            color="success"
             className="text-white"
+            color="success"
             startContent={<BsArrowUpRight className="w-4 h-4" />}
+            onPress={() => onOpen()}
           >
             <span>Tarik Dana</span>
           </Button>
@@ -172,7 +174,7 @@ const Wallet = () => {
                         </div>
                       </div>
                     </div>
-                  )
+                  ),
                 )}
 
                 {dataWalletTransactions?.data?.length === 0 && (
@@ -200,7 +202,7 @@ const Wallet = () => {
               {dataWalletTransactions?.data
                 .filter(
                   (transaction: IWalletTransaction) =>
-                    transaction.type === "outcome"
+                    transaction.type === "outcome",
                 )
                 .map((transaction: IWalletTransaction) => (
                   <div

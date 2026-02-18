@@ -9,7 +9,7 @@ const EditUnitPage = async ({
   const { id } = await params;
   const { data } = await unitService.getUnitById(id as string);
 
-  return <UnitForm type="edit" data={data?.data || {}} />;
+  return <UnitForm data={data?.data || {}} type="edit" />;
 };
 
 export default EditUnitPage;
