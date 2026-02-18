@@ -46,7 +46,18 @@ const authLimiter = rateLimit({
 
 // Middleware
 app.use(cors({
-  origin: ['http://localhost:3000', 'http://127.0.0.1:3000'],
+  origin: function(origin, callback) {
+    const allowedOrigins = [
+      'http://localhost:3000',
+      'http://127.0.0.1:3000',
+    ];
+    // Allow Vercel preview/production domains
+    if (!origin || allowedOrigins.includes(origin) || origin.endsWith('.vercel.app')) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Allow all origins in development
+    }
+  },
   credentials: true
 }));
 app.use(express.json());
@@ -89,6 +100,12 @@ app.use((req, res) => {
 
 const PORT = process.env.PORT || 3001;
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT} [HEARTBEAT]`);
-});
+// Only listen when running locally (not in Vercel serverless)
+if (process.env.VERCEL !== '1') {
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running on http://localhost:${PORT} [HEARTBEAT]`);
+  });
+}
+
+// Export for Vercel serverless
+module.exports = app;
